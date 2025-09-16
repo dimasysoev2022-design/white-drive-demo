@@ -1,0 +1,340 @@
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Play, 
+  Clock, 
+  Eye,
+  Star,
+  X,
+  Volume2,
+  Maximize,
+  SkipBack,
+  SkipForward
+} from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+interface Video {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  thumbnail: string;
+  category: 'overview' | 'technical' | 'guide' | 'webinar';
+  views: number;
+  featured: boolean;
+}
+
+export const VideoTab = () => {
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const videos: Video[] = [
+    {
+      id: "video-001",
+      title: "Обзор платформы WHITE: как это работает",
+      description: "Подробный разбор архитектуры пула, принципов распределения доходов и технических особенностей",
+      duration: "3:24",
+      thumbnail: "overview",
+      category: "overview",
+      views: 1247,
+      featured: true
+    },
+    {
+      id: "video-002", 
+      title: "Настройка и подключение майнеров",
+      description: "Пошаговая инструкция по подключению оборудования к пулу WHITE",
+      duration: "5:17",
+      thumbnail: "technical",
+      category: "technical", 
+      views: 892,
+      featured: false
+    },
+    {
+      id: "video-003",
+      title: "Анализ дашбордов и метрик",
+      description: "Как читать и интерпретировать данные в панели управления",
+      duration: "4:33",
+      thumbnail: "guide",
+      category: "guide",
+      views: 756,
+      featured: true
+    },
+    {
+      id: "video-004",
+      title: "Вебинар: Стратегии майнинга 2024",
+      description: "Записи вебинара о текущих трендах и перспективах криптомайнинга",
+      duration: "28:45",
+      thumbnail: "webinar", 
+      category: "webinar",
+      views: 2134,
+      featured: false
+    }
+  ];
+
+  const categories = [
+    { id: 'overview', name: 'Обзор', count: 1 },
+    { id: 'technical', name: 'Техническое', count: 1 },
+    { id: 'guide', name: 'Руководства', count: 1 },
+    { id: 'webinar', name: 'Вебинары', count: 1 }
+  ];
+
+  const filteredVideos = videos.filter(video => 
+    !selectedCategory || video.category === selectedCategory
+  );
+
+  const featuredVideos = videos.filter(video => video.featured);
+
+  const getThumbnailGradient = (thumbnail: string) => {
+    switch (thumbnail) {
+      case 'overview': return 'from-blue-500 to-purple-600';
+      case 'technical': return 'from-green-500 to-teal-600';  
+      case 'guide': return 'from-orange-500 to-red-600';
+      case 'webinar': return 'from-purple-500 to-pink-600';
+      default: return 'from-primary to-accent';
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'overview': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
+      case 'technical': return 'bg-green-500/10 text-green-500 border-green-500/20';
+      case 'guide': return 'bg-orange-500/10 text-orange-500 border-orange-500/20'; 
+      case 'webinar': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
+      default: return 'bg-muted/10 text-muted-foreground border-border';
+    }
+  };
+
+  const playVideo = (video: Video) => {
+    setSelectedVideo(video);
+    // In real app, would track analytics: td_play_video_${video.id}
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-bold text-gradient">Видео-гайды</h2>
+        <p className="text-muted-foreground">
+          Обучающие материалы и презентации WHITE
+        </p>
+      </div>
+
+      {/* Featured Videos */}
+      {featuredVideos.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold flex items-center">
+            <Star className="w-5 h-5 mr-2 text-primary" />
+            Рекомендуем посмотреть
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {featuredVideos.map(video => (
+              <Card key={video.id} className="card-elevated transition-smooth hover:glow cursor-pointer group">
+                <div className="relative aspect-video bg-gradient-to-br bg-muted rounded-t-lg overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-80`} />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Button 
+                      size="lg" 
+                      className="rounded-full w-16 h-16 opacity-80 group-hover:opacity-100 transition-fast"
+                      onClick={() => playVideo(video)}
+                    >
+                      <Play className="w-6 h-6 ml-1" />
+                    </Button>
+                  </div>
+                  <div className="absolute bottom-2 right-2">
+                    <Badge className="bg-black/60 text-white border-none">
+                      {video.duration}
+                    </Badge>
+                  </div>
+                  {video.featured && (
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-primary text-primary-foreground">
+                        <Star className="w-3 h-3 mr-1" />
+                        Топ
+                      </Badge>
+                    </div>
+                  )}
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base line-clamp-2">
+                    {video.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <CardDescription className="text-sm line-clamp-2 mb-3">
+                    {video.description}
+                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className={getCategoryColor(video.category)}>
+                      {categories.find(c => c.id === video.category)?.name}
+                    </Badge>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Eye className="w-3 h-3 mr-1" />
+                      {video.views.toLocaleString()}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Category Filter */}
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant={selectedCategory === null ? "default" : "outline"}
+          size="sm"
+          onClick={() => setSelectedCategory(null)}
+        >
+          Все видео ({videos.length})
+        </Button>
+        {categories.map(category => (
+          <Button
+            key={category.id}
+            variant={selectedCategory === category.id ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelectedCategory(category.id)}
+          >
+            {category.name} ({category.count})
+          </Button>
+        ))}
+      </div>
+
+      {/* All Videos Grid */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Все видео</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredVideos.map(video => (
+            <Card key={video.id} className="card-elevated transition-smooth hover:glow cursor-pointer group">
+              <div className="relative aspect-video bg-muted rounded-t-lg overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-60`} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button 
+                    size="sm" 
+                    className="rounded-full w-12 h-12 opacity-60 group-hover:opacity-100 transition-fast"
+                    onClick={() => playVideo(video)}
+                  >
+                    <Play className="w-4 h-4 ml-0.5" />
+                  </Button>
+                </div>
+                <div className="absolute bottom-2 right-2">
+                  <Badge variant="secondary" className="text-xs">
+                    <Clock className="w-3 h-3 mr-1" />
+                    {video.duration}
+                  </Badge>
+                </div>
+              </div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm line-clamp-2">
+                  {video.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <CardDescription className="text-xs line-clamp-2 mb-2">
+                  {video.description}
+                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <Eye className="w-3 h-3 mr-1" />
+                    {video.views > 1000 ? `${(video.views / 1000).toFixed(1)}k` : video.views}
+                  </div>
+                  {video.featured && (
+                    <Star className="w-3 h-3 text-primary" />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Video Player Modal */}
+      <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
+        <DialogContent className="max-w-4xl p-0">
+          <div className="relative">
+            {/* Mock Video Player */}
+            <div className="aspect-video bg-black relative overflow-hidden rounded-t-lg">
+              <div className={`absolute inset-0 bg-gradient-to-br ${selectedVideo ? getThumbnailGradient(selectedVideo.thumbnail) : 'from-primary to-accent'} opacity-40`} />
+              
+              {/* Video Controls Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-white text-center space-y-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+                    <Play className="w-8 h-8 ml-1" />
+                  </div>
+                  <p className="text-lg font-medium">
+                    {selectedVideo?.title}
+                  </p>
+                  <Badge className="bg-black/60 text-white">
+                    Демо-версия плеера
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Video Progress */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                <div className="flex items-center space-x-4 text-white">
+                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                    <SkipBack className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                    <Play className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                    <SkipForward className="w-4 h-4" />
+                  </Button>
+                  <div className="flex-1 h-1 bg-white/30 rounded">
+                    <div className="w-1/3 h-full bg-primary rounded" />
+                  </div>
+                  <span className="text-sm">1:15 / {selectedVideo?.duration}</span>
+                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                    <Volume2 className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                    <Maximize className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Close button */}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="absolute top-4 right-4 text-white hover:bg-white/20"
+                onClick={() => setSelectedVideo(null)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Video Info */}
+            <div className="p-6 space-y-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2">{selectedVideo?.title}</h3>
+                <p className="text-muted-foreground">{selectedVideo?.description}</p>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Badge variant="outline" className={selectedVideo ? getCategoryColor(selectedVideo.category) : ''}>
+                    {selectedVideo && categories.find(c => c.id === selectedVideo.category)?.name}
+                  </Badge>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Eye className="w-4 h-4 mr-1" />
+                    {selectedVideo?.views.toLocaleString()} просмотров
+                  </div>
+                </div>
+                <Badge variant="outline">
+                  <Clock className="w-3 h-3 mr-1" />
+                  {selectedVideo?.duration}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
