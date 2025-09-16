@@ -150,68 +150,6 @@ export const NextStepsTab = () => {
         </p>
       </div>
 
-      {/* Packages Comparison */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-center">Пакеты участия</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {packages.map(pkg => (
-            <Card 
-              key={pkg.id} 
-              className={`card-elevated transition-smooth cursor-pointer ${
-                selectedPackage === pkg.id ? 'ring-2 ring-primary glow' : 'hover:glow'
-              } ${pkg.popular ? 'border-primary/50' : ''}`}
-              onClick={() => handlePackageSelect(pkg.id)}
-            >
-              <CardHeader className="text-center">
-                {pkg.popular && (
-                  <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground">
-                    Популярный выбор
-                  </Badge>
-                )}
-                <CardTitle className="text-xl">{pkg.name}</CardTitle>
-                <div className="space-y-1">
-                  <div className="text-3xl font-bold text-primary">{pkg.price}</div>
-                  <CardDescription>{pkg.duration}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Key Metrics */}
-                <div className="grid grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-primary">{pkg.power}</div>
-                    <div className="text-xs text-muted-foreground">Мощность</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-success">{pkg.apy}</div>
-                    <div className="text-xs text-muted-foreground">Годовая доходность</div>
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-2">
-                  {pkg.features.map((feature, index) => (
-                    <div key={index} className="flex items-start text-sm">
-                      <CheckCircle className="w-4 h-4 text-success mt-0.5 mr-2 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <Button 
-                  className="w-full" 
-                  variant={selectedPackage === pkg.id ? "default" : "outline"}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePackageSelect(pkg.id);
-                  }}
-                >
-                  {selectedPackage === pkg.id ? 'Выбрано' : 'Выбрать пакет'}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
 
       {/* CTA Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -247,13 +185,6 @@ export const NextStepsTab = () => {
               Запросить КП
             </Button>
 
-            {selectedPackage && (
-              <div className="mt-3 p-3 bg-primary/10 rounded-lg">
-                <p className="text-sm text-primary font-medium">
-                  Выбран пакет: {packages.find(p => p.id === selectedPackage)?.name}
-                </p>
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -369,9 +300,9 @@ export const NextStepsTab = () => {
         
         <Card className="text-center p-6">
           <DollarSign className="w-8 h-8 text-primary mx-auto mb-3" />
-          <h4 className="font-semibold mb-2">₽2.8М выплачено</h4>
+          <h4 className="font-semibold mb-2">Стабильные выплаты</h4>
           <p className="text-sm text-muted-foreground">
-            Общая сумма выплат участникам за месяц
+            Регулярные выплаты участникам пула
           </p>
         </Card>
       </div>

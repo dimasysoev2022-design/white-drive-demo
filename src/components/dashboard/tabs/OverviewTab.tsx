@@ -20,44 +20,35 @@ export const OverviewTab = () => {
     {
       title: "Аптайм",
       value: "99.8%",
-      description: "Среднее за месяц",
+      description: "За период тест-драйва (3 дня)",
       icon: Activity,
-      trend: { direction: 'up' as const, value: "+0.2%", label: "за 7 дней" }
+      trend: { direction: 'up' as const, value: "+0.2%", label: "стабильно" }
     },
     {
       title: "Производительность",
-      value: "847.3 TH/s",
+      value: "470 TH/s",
       description: "Текущая мощность",
       icon: Zap,
-      trend: { direction: 'up' as const, value: "+12.4%", label: "к плану" }
-    },
-    {
-      title: "Начисления",
-      value: "₽94,847",
-      description: "За текущий месяц",
-      icon: DollarSign,
-      trend: { direction: 'up' as const, value: "+8.7%", label: "к прошлому" }
-    },
-    {
-      title: "Доходность",
-      value: "18.4%",
-      description: "Годовая (APY)",
-      icon: TrendingUp,
-      trend: { direction: 'up' as const, value: "+2.1%", label: "к медиане" }
-    },
-    {
-      title: "Активные майнеры",
-      value: "24/24",
-      description: "Онлайн устройств",
-      icon: Server,
-      trend: { direction: 'neutral' as const, value: "100%", label: "доступности" }
+      trend: { direction: 'neutral' as const, value: "стабильно", label: "работает" }
     }
   ];
 
+  // Ежедневная статистика за период тест-драйва (3 дня)
+  const dailyStats = [
+    { date: "15.01.2024", accrual_btc: "0.00032450", accrual_rub: "13420" },
+    { date: "16.01.2024", accrual_btc: "0.00034120", accrual_rub: "14680" },
+    { date: "17.01.2024", accrual_btc: "0.00031890", accrual_rub: "13290" }
+  ];
+
+  // Общая доходность за период
+  const totalAccrualBtc = dailyStats.reduce((sum, day) => sum + parseFloat(day.accrual_btc), 0);
+  const totalAccrualRub = dailyStats.reduce((sum, day) => sum + parseInt(day.accrual_rub), 0);
+  const apyPercent = "18.4%"; // Расчет из данных как было раньше
+
   const todayTasks = [
-    { id: 1, title: "Изучить дашборды производительности", completed: false },
-    { id: 2, title: "Просмотреть документы пула", completed: false },
-    { id: 3, title: "Посмотреть видео-гайды", completed: false }
+    { id: 1, title: "Изучить дашборд производительности", completed: false },
+    { id: 2, title: "Просмотреть документы", completed: false },
+    { id: 3, title: "Посмотреть видео-инструкции", completed: false }
   ];
 
   return (
@@ -79,6 +70,57 @@ export const OverviewTab = () => {
           <KPICard key={index} {...kpi} />
         ))}
       </div>
+
+      {/* Общая доходность за период тест-драйва */}
+      <Card className="card-elevated">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <DollarSign className="w-5 h-5 mr-2 text-primary" />
+            За период тест-драйва (3 дня) — Общая доходность
+          </CardTitle>
+          <CardDescription>
+            Суммарные начисления за демонстрационный период
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="text-center p-4 rounded-lg bg-muted/30">
+              <div className="text-2xl font-bold text-primary">{totalAccrualBtc.toFixed(8)} BTC</div>
+              <div className="text-sm text-muted-foreground">Общая доходность BTC</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-muted/30">
+              <div className="text-2xl font-bold text-success">₽{totalAccrualRub.toLocaleString()}</div>
+              <div className="text-sm text-muted-foreground">Общая доходность ₽</div>
+            </div>
+          </div>
+          <div className="text-center p-3 rounded-lg bg-primary/10">
+            <div className="text-lg font-bold text-primary">Годовая доходность (APY): {apyPercent}</div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Ежедневная статистика */}
+      <Card className="card-elevated">
+        <CardHeader>
+          <CardTitle>Ежедневная статистика</CardTitle>
+          <CardDescription>
+            Начисления за каждый день периода тест-драйва
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {dailyStats.map((day, index) => (
+              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                <div className="font-medium">{day.date}</div>
+                <div className="text-right space-y-1">
+                  <div className="text-sm font-mono">{day.accrual_btc} BTC</div>
+                  <div className="text-sm text-muted-foreground">₽{parseInt(day.accrual_rub).toLocaleString()}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Video of the Day */}
@@ -115,7 +157,7 @@ export const OverviewTab = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <CheckCircle className="w-5 h-5 mr-2 text-primary" />
-              Сегодня
+              Сегодня рекомендуем
             </CardTitle>
             <CardDescription>
               Рекомендуемые задачи
@@ -146,25 +188,6 @@ export const OverviewTab = () => {
         </Card>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center space-y-2 p-4 rounded-lg bg-muted/30">
-          <div className="text-2xl font-bold text-success">76ч</div>
-          <div className="text-sm text-muted-foreground">Демо-доступ</div>
-        </div>
-        <div className="text-center space-y-2 p-4 rounded-lg bg-muted/30">
-          <div className="text-2xl font-bold text-primary">5</div>
-          <div className="text-sm text-muted-foreground">Дашбордов</div>
-        </div>
-        <div className="text-center space-y-2 p-4 rounded-lg bg-muted/30">
-          <div className="text-2xl font-bold text-warning">12</div>
-          <div className="text-sm text-muted-foreground">Документов</div>
-        </div>
-        <div className="text-center space-y-2 p-4 rounded-lg bg-muted/30">
-          <div className="text-2xl font-bold text-accent">4</div>
-          <div className="text-sm text-muted-foreground">Видео-гайда</div>
-        </div>
-      </div>
     </div>
   );
 };

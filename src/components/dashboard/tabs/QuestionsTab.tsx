@@ -271,95 +271,22 @@ export const QuestionsTab = () => {
           </div>
         </div>
 
-        {/* Question Form */}
+        {/* Contact Call-to-Action */}
         <div className="space-y-4">
           <Card className="card-elevated">
-            <CardHeader>
-              <CardTitle className="flex items-center">
+            <CardHeader className="text-center">
+              <CardTitle className="flex items-center justify-center">
                 <Send className="w-5 h-5 mr-2 text-primary" />
-                Задать вопрос
+                Задать вопросы, если что-то непонятно
               </CardTitle>
               <CardDescription>
-                Не нашли ответ? Напишите нам, и мы свяжемся с вами
+                Мы готовы ответить на любые вопросы о работе пула
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Имя *</Label>
-                  <Input
-                    id="name"
-                    placeholder="Ваше имя"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="example@mail.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="topic">Тема (опционально)</Label>
-                  <Input
-                    id="topic"
-                    placeholder="Краткая тема вопроса"
-                    value={formData.topic}
-                    onChange={(e) => setFormData(prev => ({ ...prev, topic: e.target.value }))}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Сообщение *</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Опишите ваш вопрос подробно..."
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                    required
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full" 
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Clock className="w-4 h-4 mr-2 animate-spin" />
-                      Отправляем...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Отправить вопрос
-                    </>
-                  )}
-                </Button>
-              </form>
-
-              <div className="mt-4 p-3 bg-muted/30 rounded-lg">
-                <div className="flex items-start">
-                  <CheckCircle className="w-4 h-4 text-success mt-0.5 mr-2" />
-                  <div className="text-sm">
-                    <p className="font-medium text-success">Быстрый ответ</p>
-                    <p className="text-muted-foreground">
-                      Отвечаем на вопросы в течение 24 часов в рабочие дни
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <CardContent className="text-center space-y-4">
+              <p className="text-muted-foreground">
+                Используйте контакты ниже для связи с нашей командой
+              </p>
             </CardContent>
           </Card>
 

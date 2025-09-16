@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ userEmail, onContact }: HeaderProps) => {
-  const [timeLeft, setTimeLeft] = useState(76 * 3600); // 76 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(72 * 3600); // 72 hours in seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
