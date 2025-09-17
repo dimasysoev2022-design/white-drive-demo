@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "./ThemeToggle";
 import { Shield, MessageCircle, Clock } from "lucide-react";
 
 interface HeaderProps {
@@ -62,6 +63,7 @@ export const Header = ({ userEmail, onContact }: HeaderProps) => {
           <Badge variant="secondary" className="hidden sm:inline-flex">
             ДЕМО
           </Badge>
+          <ThemeToggle />
           <Button 
             variant="outline" 
             size="sm" 
