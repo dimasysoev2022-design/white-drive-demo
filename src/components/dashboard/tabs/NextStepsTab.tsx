@@ -152,7 +152,19 @@ export const NextStepsTab = () => {
 
 
       {/* CTA Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="flex flex-col items-center gap-6 mb-8">
+        <Button size="lg" className="h-16 text-lg w-full max-w-md">
+          <FileText className="w-6 h-6 mr-3" />
+          Запросить коммерческое предложение
+        </Button>
+        <Button size="lg" variant="outline" className="h-16 text-lg w-full max-w-md">
+          <MessageCircle className="w-6 h-6 mr-3" />
+          Связаться с менеджером
+        </Button>
+      </div>
+
+      {/* Old CTA Section - removing content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{display: 'none'}}>
         {/* Request Quote */}
         <Card className="card-elevated">
           <CardHeader className="text-center">
@@ -329,7 +341,7 @@ export const NextStepsTab = () => {
                 <Phone className="w-4 h-4 text-primary mr-3" />
                 <div>
                   <div className="font-medium">Телефон</div>
-                  <div className="text-sm text-muted-foreground">+7 (495) 123-45-67</div>
+                  <div className="text-sm text-muted-foreground">8-916-235-44-00</div>
                 </div>
               </div>
             </div>
@@ -338,7 +350,7 @@ export const NextStepsTab = () => {
                 <MessageCircle className="w-4 h-4 text-primary mr-3" />
                 <div>
                   <div className="font-medium">Telegram</div>
-                  <div className="text-sm text-muted-foreground">@white_sales</div>
+                  <div className="text-sm text-muted-foreground">@fred_parkin</div>
                 </div>
               </div>
               <div className="flex items-center">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/layout/Header";
 import { OverviewTab } from "./tabs/OverviewTab";
-import { DashboardsTab } from "./tabs/DashboardsTab";
+
 import { DocumentsTab } from "./tabs/DocumentsTab";
 import { VideoTab } from "./tabs/VideoTab";
 import { QuestionsTab } from "./tabs/QuestionsTab";
@@ -27,40 +27,33 @@ export const TestDriveDashboard = ({ userEmail }: TestDriveDashboardProps) => {
       
       <main className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:grid-cols-6 mb-6">
-            <TabsTrigger value="overview" className="flex items-center space-x-2">
-              <Home className="w-4 h-4" />
-              <span className="hidden sm:inline">Обзор</span>
-            </TabsTrigger>
-            <TabsTrigger value="dashboards" className="flex items-center space-x-2">
-              <BarChart3 className="w-4 h-4" />
-              <span className="hidden sm:inline">Дашборды</span>
-            </TabsTrigger>
-            <TabsTrigger value="documents" className="flex items-center space-x-2">
-              <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">Документы</span>
-            </TabsTrigger>
-            <TabsTrigger value="video" className="flex items-center space-x-2">
-              <Play className="w-4 h-4" />
-              <span className="hidden sm:inline">Видео</span>
-            </TabsTrigger>
-            <TabsTrigger value="questions" className="flex items-center space-x-2">
-              <HelpCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Вопросы</span>
-            </TabsTrigger>
-            <TabsTrigger value="next-steps" className="flex items-center space-x-2">
-              <ArrowRight className="w-4 h-4" />
-              <span className="hidden sm:inline">Далее</span>
-            </TabsTrigger>
-          </TabsList>
+        <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5 mb-6">
+          <TabsTrigger value="overview" className="flex items-center space-x-2">
+            <Home className="w-4 h-4" />
+            <span className="hidden sm:inline">Обзор</span>
+          </TabsTrigger>
+          <TabsTrigger value="documents" className="flex items-center space-x-2">
+            <FileText className="w-4 h-4" />
+            <span className="hidden sm:inline">Документы</span>
+          </TabsTrigger>
+          <TabsTrigger value="video" className="flex items-center space-x-2">
+            <Play className="w-4 h-4" />
+            <span className="hidden sm:inline">Видео</span>
+          </TabsTrigger>
+          <TabsTrigger value="questions" className="flex items-center space-x-2">
+            <HelpCircle className="w-4 h-4" />
+            <span className="hidden sm:inline">Вопросы</span>
+          </TabsTrigger>
+          <TabsTrigger value="next-steps" className="flex items-center space-x-2">
+            <ArrowRight className="w-4 h-4" />
+            <span className="hidden sm:inline">Далее</span>
+          </TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="overview">
-            <OverviewTab />
-          </TabsContent>
-          <TabsContent value="dashboards">
-            <DashboardsTab />
-          </TabsContent>
-          <TabsContent value="documents">
+        <TabsContent value="overview">
+          <OverviewTab />
+        </TabsContent>
+        <TabsContent value="documents">
             <DocumentsTab />
           </TabsContent>
           <TabsContent value="video">

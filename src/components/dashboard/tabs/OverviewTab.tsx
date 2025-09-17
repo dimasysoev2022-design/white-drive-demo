@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { KPICard } from "../KPICard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,18 @@ import {
   Clock,
   ArrowRight
 } from "lucide-react";
+import { 
+  BarChart,
+  Bar,
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer
+} from 'recharts';
 
 export const OverviewTab = () => {
+  const [currencyMode, setCurrencyMode] = useState<'rub' | 'btc'>('rub');
   const kpiData = [
     {
       title: "Аптайм",
@@ -45,6 +56,27 @@ export const OverviewTab = () => {
   const totalAccrualRub = dailyStats.reduce((sum, day) => sum + parseInt(day.accrual_rub), 0);
   const apyPercent = "18.4%"; // Расчет из данных как было раньше
 
+  // Данные для графика начислений
+  const accrualData = currencyMode === 'rub' 
+    ? [
+        { date: '15.01', value: 13420 },
+        { date: '16.01', value: 14680 },
+        { date: '17.01', value: 13290 }
+      ]
+    : [
+        { date: '15.01', value: 0.00032450 },
+        { date: '16.01', value: 0.00034120 },
+        { date: '17.01', value: 0.00031890 }
+      ];
+
+  const formatCurrency = (value: number) => {
+    if (currencyMode === 'rub') {
+      return `₽${value.toLocaleString()}`;
+    } else {
+      return `${value.toFixed(8)} BTC`;
+    }
+  };
+
   const todayTasks = [
     { id: 1, title: "Изучить дашборд производительности", completed: false },
     { id: 2, title: "Просмотреть документы", completed: false },
@@ -60,12 +92,12 @@ export const OverviewTab = () => {
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Это демонстрационная версия панели управления майнинг-пулом. 
-          Изучите реальные данные и процессы за 76 часов.
+          Изучите реальные данные и процессы за 72 часа.
         </p>
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {kpiData.map((kpi, index) => (
           <KPICard key={index} {...kpi} />
         ))}
@@ -93,9 +125,71 @@ export const OverviewTab = () => {
               <div className="text-sm text-muted-foreground">Общая доходность ₽</div>
             </div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-primary/10">
-            <div className="text-lg font-bold text-primary">Годовая доходность (APY): {apyPercent}</div>
+          <div className="space-y-3">
+            <div className="text-center p-3 rounded-lg bg-primary/10">
+              <div className="text-lg font-bold text-primary">Годовая доходность (APY): {apyPercent}</div>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/30">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium">Окупаемость</span>
+                <span className="text-sm font-bold text-primary">18.4%</span>
+              </div>
+              <Progress value={18.4} className="w-full" />
+            </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* График начислений */}
+      <Card className="card-elevated">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center">
+                <DollarSign className="w-5 h-5 mr-2 text-primary" />
+                Начисления ({currencyMode === 'rub' ? 'RUB' : 'BTC'})
+              </CardTitle>
+              <CardDescription>За период тест-драйва (3 дня)</CardDescription>
+            </div>
+            <div className="flex rounded-lg bg-muted p-1">
+              <Button
+                variant={currencyMode === 'rub' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setCurrencyMode('rub')}
+              >
+                ₽
+              </Button>
+              <Button
+                variant={currencyMode === 'btc' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setCurrencyMode('btc')}
+              >
+                BTC
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={accrualData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" />
+              <YAxis stroke="hsl(var(--muted-foreground))" />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'hsl(var(--card))', 
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px'
+                }}
+                formatter={(value: number) => [formatCurrency(value), 'Начисления']}
+              />
+              <Bar 
+                dataKey="value" 
+                fill="hsl(var(--primary))" 
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 

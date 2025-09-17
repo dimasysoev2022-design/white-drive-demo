@@ -15,7 +15,8 @@ import {
   Clock,
   Shield,
   Zap,
-  DollarSign
+  DollarSign,
+  Phone
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -284,9 +285,24 @@ export const QuestionsTab = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4">
-              <p className="text-muted-foreground">
-                Используйте контакты ниже для связи с нашей командой
+              <p className="text-sm text-muted-foreground mb-4">
+                Напишите нам в Telegram или позвоните:
               </p>
+              <div className="space-y-3 mb-4">
+                <Button variant="outline" className="w-full">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  @fred_parkin
+                </Button>
+                <Button variant="outline" className="w-full">
+                  <Phone className="w-4 h-4 mr-2" />
+                  8-916-235-44-00
+                </Button>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <p className="mb-2">Время работы:</p>
+                <p>ПН-ПТ: 10:00-19:00 (МСК)</p>
+                <p>СБ-ВС: выходной</p>
+              </div>
             </CardContent>
           </Card>
 
@@ -298,11 +314,11 @@ export const QuestionsTab = () => {
             <CardContent className="space-y-3">
               <div className="flex items-center text-sm">
                 <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                <span>Email: support@white-platform.ru</span>
+                <span>Telegram: @fred_parkin</span>
               </div>
               <div className="flex items-center text-sm">
                 <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                <span>Telegram: @white_support</span>
+                <span>Телефон: 8-916-235-44-00</span>
               </div>
               <div className="flex items-center text-sm">
                 <div className="w-2 h-2 bg-primary rounded-full mr-3" />
