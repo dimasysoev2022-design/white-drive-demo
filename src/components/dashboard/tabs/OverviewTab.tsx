@@ -28,22 +28,6 @@ import {
 export const OverviewTab = () => {
   const [currencyMode, setCurrencyMode] = useState<'rub' | 'btc'>('rub');
   const [selectedProduct, setSelectedProduct] = useState<'M50' | 'T21' | 'S21'>('S21');
-  const kpiData = [
-    {
-      title: "Аптайм",
-      value: "99.8%",
-      description: "За период демонстрации (3 дня)",
-      icon: Activity,
-      trend: { direction: 'up' as const, value: "+0.2%", label: "стабильно" }
-    },
-    {
-      title: "Производительность",
-      value: "470 TH/s",
-      description: "Текущая мощность",
-      icon: Zap,
-      trend: { direction: 'neutral' as const, value: "стабильно", label: "работает" }
-    }
-  ];
 
   // Ежедневная статистика за период демонстрации (3 дня)
   const dailyStats = [
@@ -146,12 +130,6 @@ export const OverviewTab = () => {
         </p>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {kpiData.map((kpi, index) => (
-          <KPICard key={index} {...kpi} />
-        ))}
-      </div>
 
       {/* Продукты WHITE */}
       <Card className="card-elevated">
@@ -166,14 +144,18 @@ export const OverviewTab = () => {
                 Обзор майнинг-продуктов по годам
               </CardDescription>
             </div>
-            <div className="flex rounded-lg bg-muted p-1">
+            <div className="flex rounded-lg bg-card border-2 border-primary/20 p-2 shadow-lg">
               {(['M50', 'T21', 'S21'] as const).map((product) => (
                 <Button
                   key={product}
                   variant={selectedProduct === product ? 'default' : 'ghost'}
-                  size="sm"
+                  size="default"
                   onClick={() => setSelectedProduct(product)}
-                  className="text-xs"
+                  className={`text-sm font-semibold mx-1 px-4 py-2 transition-all duration-200 ${
+                    selectedProduct === product 
+                      ? 'bg-primary text-primary-foreground shadow-md scale-105' 
+                      : 'hover:bg-primary/10 hover:text-primary hover:scale-102'
+                  }`}
                 >
                   {product} ({productsData[product].year})
                 </Button>
