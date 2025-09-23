@@ -125,8 +125,7 @@ export const OverviewTab = () => {
           Добро пожаловать в WHITE
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Это демонстрационная версия панели управления майнинг-пулом. 
-          Изучите реальные данные и процессы за 72 часа.
+          Это демонстрационная версия нашего продукта, в которой вы можете изучить всю информацию и принять решение о покупке.
         </p>
       </div>
 
@@ -199,6 +198,7 @@ export const OverviewTab = () => {
                 <div className="p-4 rounded-lg bg-primary/10">
                   <div className="text-sm text-muted-foreground mb-1">Доходность на сегодня</div>
                   <div className="text-xl font-bold text-primary">{productsData.S21.currentProfit}</div>
+                  <Progress value={42.5} className="w-full mt-2" />
                 </div>
               </div>
 
@@ -232,6 +232,19 @@ export const OverviewTab = () => {
                   <Progress value={20.9} className="w-full mt-2" />
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-info/10">
+                  <div className="text-sm text-muted-foreground mb-1">ROI прогресс</div>
+                  <div className="text-lg font-bold text-info">20.9%</div>
+                  <Progress value={20.9} className="w-full mt-2" />
+                </div>
+                <div className="p-4 rounded-lg bg-accent/10">
+                  <div className="text-sm text-muted-foreground mb-1">Доходность прогресс</div>
+                  <div className="text-lg font-bold text-accent">35.2%</div>
+                  <Progress value={35.2} className="w-full mt-2" />
+                </div>
+              </div>
             </div>
           ) : (
             // Стандартные карточки для M50 и T21
@@ -260,6 +273,7 @@ export const OverviewTab = () => {
                 <div className="p-3 rounded-lg bg-success/10">
                   <div className="text-xs text-muted-foreground mb-1">ROI</div>
                   <div className="text-sm font-bold text-success">{productsData[selectedProduct].roiPercent}</div>
+                  <Progress value={parseFloat(productsData[selectedProduct].roiPercent)} className="w-full mt-2" />
                 </div>
               </div>
 
@@ -272,6 +286,7 @@ export const OverviewTab = () => {
                 <div className="p-4 rounded-lg bg-success/10">
                   <div className="text-sm text-muted-foreground mb-1">Доходность на сегодня</div>
                   <div className="text-lg font-bold text-success">{productsData[selectedProduct].currentProfit}</div>
+                  <Progress value={parseFloat(productsData[selectedProduct].roiPercent) * 1.2} className="w-full mt-2" />
                 </div>
               </div>
             </div>
