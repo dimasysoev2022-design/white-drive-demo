@@ -30,21 +30,21 @@ export const ProductSelector = ({ selectedProduct, onProductSelect }: ProductSel
   const products = [
     {
       id: 'M50' as const,
-      name: 'Whatsminer M50 120 TH/s',
+      name: 'Whatsminer M50',
       performance: '120 TH/s',
       description: 'Первый продукт, который мы запустили',
       date: 'с 1 апреля 2023 по 1 июня 2024'
     },
     {
       id: 'T21' as const,
-      name: 'Antminer T21 190 TH/s', 
+      name: 'Antminer T21', 
       performance: '190 TH/s',
       description: 'Второй продукт в нашей линейке',
       date: 'с 1 июня 2024 по 1 сентября 2025'
     },
     {
       id: 'S21' as const,
-      name: 'Antminer S21 235 TH/s',
+      name: 'Antminer S21',
       performance: '235 TH/s', 
       description: 'Актуальный продукт',
       date: 'дата запуска: 1 сентября 2025'
