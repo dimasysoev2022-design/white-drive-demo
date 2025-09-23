@@ -17,35 +17,39 @@ export const OverviewTab = () => {
   // Данные продуктов с обновленной информацией
   const productsData: Record<'M50' | 'T21' | 'S21', Product> = {
     M50: {
-      name: "M50",
+      name: "M50 Antminer",
       year: "2023",
-      description: "Первый продукт, который мы запустили в 2023",
+      description: "Первый продукт, который мы запустили",
       purchasePrice: "₽2,450,000",
       performance: "120 TH/s",
       purchaseDate: "1 апреля 2023",
+      miningStartDate: "1 апреля 2023",
       currentProfit: "₽1,230,450",
       minedBTC: "2.45672340",
       btcPriceRub: "₽6,789,230",
       workingDays: "543",
-      roiPercent: "50.2"
+      roiPercent: "50.2",
+      paybackPercent: "45.8"
     },
     T21: {
-      name: "T21", 
+      name: "T21 Whatsminer", 
       year: "2024",
-      description: "Продукт, который мы запустили 1 июня 2024",
+      description: "Второй продукт в нашей линейке",
       purchasePrice: "₽1,850,000",
       performance: "190 TH/s",
       purchaseDate: "1 июня 2024",
+      miningStartDate: "1 июня 2024",
       currentProfit: "₽567,890",
       minedBTC: "1.23456789",
       btcPriceRub: "₽6,789,230", 
       workingDays: "298",
-      roiPercent: "30.7"
+      roiPercent: "30.7",
+      paybackPercent: "25.3"
     },
     S21: {
-      name: "S21",
+      name: "S21 Antminer",
       year: "2025",
-      description: "Продукт, который доступен на сегодняшний день",
+      description: "Актуальный продукт",
       purchasePrice: "₽3,200,000",
       performance: "200 TH/s",
       miningStartDate: "1 сентября 2025",
@@ -54,13 +58,13 @@ export const OverviewTab = () => {
       btcPriceRub: "₽6,789,230",
       currentProfit: "₽670,560",
       roiPercent: "20.9",
+      paybackPercent: "15.4",
       monthlyStats: [
         { month: "Декабрь 2024", btc: "0.03245678", rub: "₽220,340" },
         { month: "Январь 2025", btc: "0.06630865", rub: "₽450,220" }
       ],
       dailyMiningCurrent: "0.01234567",
-      uptimePercent: "99.8%",
-      paybackPercent: "20.9%"
+      uptimePercent: "99.8%"
     }
   };
 

@@ -30,24 +30,24 @@ export const ProductSelector = ({ selectedProduct, onProductSelect }: ProductSel
   const products = [
     {
       id: 'M50' as const,
-      name: 'M50',
+      name: 'M50 Antminer',
       performance: '120 TH/s',
-      description: 'Первый продукт, который мы запустили в 2023',
-      date: '1 апреля 2023'
+      description: 'Первый продукт, который мы запустили',
+      date: 'с 1 апреля 2023 по 1 июня 2024'
     },
     {
       id: 'T21' as const,
-      name: 'T21', 
+      name: 'T21 Whatsminer', 
       performance: '190 TH/s',
-      description: 'Продукт, который мы запустили 1 июня 2024',
-      date: '1 июня 2024'
+      description: 'Второй продукт в нашей линейке',
+      date: 'с 1 июня 2024 по 1 сентября 2025'
     },
     {
       id: 'S21' as const,
-      name: 'S21',
+      name: 'S21 Antminer',
       performance: '200 TH/s', 
-      description: 'Продукт, который доступен на сегодняшний день',
-      date: '1 сентября 2025'
+      description: 'Актуальный продукт',
+      date: 'дата запуска: 1 сентября 2025'
     }
   ];
 
@@ -74,8 +74,8 @@ export const ProductSelector = ({ selectedProduct, onProductSelect }: ProductSel
             >
               <div className="text-2xl font-bold">{product.name}</div>
               <div className="text-lg font-semibold">{product.performance}</div>
-              <div className="text-sm opacity-90">{product.description}</div>
-              <div className="text-xs opacity-75">Дата запуска: {product.date}</div>
+              <div className="text-sm opacity-90 leading-tight">{product.description}</div>
+              <div className="text-xs opacity-75 leading-tight">{product.date}</div>
             </Button>
           ))}
         </div>
