@@ -17,7 +17,7 @@ export const OverviewTab = () => {
   // Данные продуктов с обновленной информацией
   const productsData: Record<'M50' | 'T21' | 'S21', Product> = {
     M50: {
-      name: "M50 Antminer",
+      name: "Whatsminer M50 120 TH/s",
       year: "2023",
       description: "Первый продукт, который мы запустили",
       purchasePrice: "₽2,450,000",
@@ -32,7 +32,7 @@ export const OverviewTab = () => {
       paybackPercent: "45.8"
     },
     T21: {
-      name: "T21 Whatsminer", 
+      name: "Antminer T21 190 TH/s", 
       year: "2024",
       description: "Второй продукт в нашей линейке",
       purchasePrice: "₽1,850,000",
@@ -47,11 +47,11 @@ export const OverviewTab = () => {
       paybackPercent: "25.3"
     },
     S21: {
-      name: "S21 Antminer",
+      name: "Antminer S21 235 TH/s",
       year: "2025",
       description: "Актуальный продукт",
       purchasePrice: "₽3,200,000",
-      performance: "200 TH/s",
+      performance: "235 TH/s",
       miningStartDate: "1 сентября 2025",
       workingDays: "8",
       minedBTC: "0.09876543",
