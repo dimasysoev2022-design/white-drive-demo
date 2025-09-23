@@ -85,6 +85,7 @@ export const OverviewTab = () => {
       year: "2023",
       description: "Первый продукт с 2023 года",
       purchasePrice: "₽2,450,000",
+      performance: "116 TH/s",
       purchaseDate: "15.03.2023",
       currentProfit: "₽1,230,450",
       minedBTC: "2.45672340",
@@ -97,6 +98,7 @@ export const OverviewTab = () => {
       year: "2024",
       description: "Второй продукт с 2024 года",
       purchasePrice: "₽1,850,000",
+      performance: "190 TH/s",
       purchaseDate: "22.01.2024",
       currentProfit: "₽567,890",
       minedBTC: "1.23456789",
@@ -109,6 +111,7 @@ export const OverviewTab = () => {
       year: "2025",
       description: "Текущий продукт 2025 года",
       purchasePrice: "₽3,200,000",
+      performance: "200 TH/s",
       miningStartDate: "10.01.2025",
       workingDays: "8",
       minedBTC: "0.09876543",
@@ -186,10 +189,14 @@ export const OverviewTab = () => {
                 <h3 className="text-xl font-bold text-primary mb-2">{productsData.S21.name} - {productsData.S21.description}</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="p-4 rounded-lg bg-muted/30">
                   <div className="text-sm text-muted-foreground mb-1">Цена карты на момент покупки</div>
                   <div className="text-lg font-bold">{productsData.S21.purchasePrice}</div>
+                </div>
+                <div className="p-4 rounded-lg bg-muted/30">
+                  <div className="text-sm text-muted-foreground mb-1">Производительность</div>
+                  <div className="text-lg font-bold">{productsData.S21.performance}</div>
                 </div>
                 <div className="p-4 rounded-lg bg-muted/30">
                   <div className="text-sm text-muted-foreground mb-1">Дата начала майнинга</div>
@@ -251,10 +258,14 @@ export const OverviewTab = () => {
                 <h3 className="text-lg font-bold text-primary mb-1">{productsData[selectedProduct].name} - {productsData[selectedProduct].description}</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div className="p-3 rounded-lg bg-muted/30">
                   <div className="text-xs text-muted-foreground mb-1">Цена при покупке</div>
                   <div className="text-sm font-bold">{productsData[selectedProduct].purchasePrice}</div>
+                </div>
+                <div className="p-3 rounded-lg bg-muted/30">
+                  <div className="text-xs text-muted-foreground mb-1">Производительность</div>
+                  <div className="text-sm font-bold">{productsData[selectedProduct].performance}</div>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30">
                   <div className="text-xs text-muted-foreground mb-1">Дата покупки</div>
@@ -286,118 +297,6 @@ export const OverviewTab = () => {
         </CardContent>
       </Card>
 
-      {/* Общая доходность за период тест-драйва */}
-      <Card className="card-elevated">
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <DollarSign className="w-5 h-5 mr-2 text-primary" />
-            За период демонстрации (3 дня) — Общая доходность
-          </CardTitle>
-          <CardDescription>
-            Суммарные начисления за демонстрационный период
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="text-center p-4 rounded-lg bg-muted/30">
-              <div className="text-2xl font-bold text-primary">{totalAccrualBtc.toFixed(8)} BTC</div>
-              <div className="text-sm text-muted-foreground">Общая доходность BTC</div>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-muted/30">
-              <div className="text-2xl font-bold text-success">₽{totalAccrualRub.toLocaleString()}</div>
-              <div className="text-sm text-muted-foreground">Общая доходность ₽</div>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="text-center p-3 rounded-lg bg-primary/10">
-              <div className="text-lg font-bold text-primary">Годовая доходность (APY): {apyPercent}</div>
-            </div>
-            <div className="p-3 rounded-lg bg-muted/30">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Окупаемость</span>
-                <span className="text-sm font-bold text-primary">18.4%</span>
-              </div>
-              <Progress value={18.4} className="w-full" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* График начислений */}
-      <Card className="card-elevated">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center">
-                <DollarSign className="w-5 h-5 mr-2 text-primary" />
-                Начисления ({currencyMode === 'rub' ? 'RUB' : 'BTC'})
-              </CardTitle>
-              <CardDescription>За период демонстрации (3 дня)</CardDescription>
-            </div>
-            <div className="flex rounded-lg bg-muted p-1">
-              <Button
-                variant={currencyMode === 'rub' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setCurrencyMode('rub')}
-              >
-                ₽
-              </Button>
-              <Button
-                variant={currencyMode === 'btc' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setCurrencyMode('btc')}
-              >
-                BTC
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={accrualData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" />
-              <YAxis stroke="hsl(var(--muted-foreground))" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'hsl(var(--card))', 
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
-                formatter={(value: number) => [formatCurrency(value), 'Начисления']}
-              />
-              <Bar 
-                dataKey="value" 
-                fill="hsl(var(--primary))" 
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      {/* Ежедневная статистика */}
-      <Card className="card-elevated">
-        <CardHeader>
-          <CardTitle>Ежедневная статистика</CardTitle>
-          <CardDescription>
-            Начисления за каждый день периода демонстрации
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {dailyStats.map((day, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                <div className="font-medium">{day.date}</div>
-                <div className="text-right space-y-1">
-                  <div className="text-sm font-mono">{day.accrual_btc} BTC</div>
-                  <div className="text-sm text-muted-foreground">₽{parseInt(day.accrual_rub).toLocaleString()}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Video of the Day */}
