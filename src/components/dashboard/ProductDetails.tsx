@@ -41,16 +41,11 @@ export const ProductDetails = ({ product, productId }: ProductDetailsProps) => {
           </div>
 
           {/* Доходность и добыча */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
             <div className="p-4 rounded-lg bg-success/10">
               <div className="text-sm text-muted-foreground mb-1">Добыто биткоина всего</div>
               <div className="text-xl font-bold text-success">{product.minedBTC} BTC</div>
               <div className="text-sm text-muted-foreground">≈ {product.btcPriceRub}</div>
-            </div>
-            <div className="p-4 rounded-lg bg-primary/10">
-              <div className="text-sm text-muted-foreground mb-1">Доходность на сегодня</div>
-              <div className="text-xl font-bold text-primary">{product.roiPercent}%</div>
-              <Progress value={parseFloat(product.roiPercent)} className="w-full mt-2" />
             </div>
           </div>
 
