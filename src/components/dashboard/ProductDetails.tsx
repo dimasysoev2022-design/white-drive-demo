@@ -50,6 +50,19 @@ export const ProductDetails = ({ product, productId }: ProductDetailsProps) => {
             <div className="p-4 rounded-lg bg-primary/10">
               <div className="text-sm text-muted-foreground mb-1">Доходность на сегодня</div>
               <div className="text-xl font-bold text-primary">{product.roiPercent}%</div>
+              <Progress value={parseFloat(product.roiPercent)} className="w-full mt-2" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-lg bg-info/10">
+              <div className="text-sm text-muted-foreground mb-1">Аптайм</div>
+              <div className="text-xl font-bold text-info">{product.uptimePercent}</div>
+            </div>
+            <div className="p-4 rounded-lg bg-accent/10">
+              <div className="text-sm text-muted-foreground mb-1">Ежедневная добыча</div>
+              <div className="text-xl font-bold text-accent">{product.dailyMiningCurrent} BTC</div>
+              <div className="text-sm text-muted-foreground mt-1">≈ ₽{(parseFloat(product.dailyMiningCurrent || '0') * 4200000).toLocaleString()}</div>
             </div>
           </div>
 
@@ -78,20 +91,11 @@ export const ProductDetails = ({ product, productId }: ProductDetailsProps) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 rounded-lg bg-muted/30">
-                  <div className="text-sm text-muted-foreground mb-1">Ежедневная добыча</div>
-                  <div className="text-lg font-bold">{product.dailyMiningCurrent} BTC</div>
-                </div>
-                <div className="text-center p-4 rounded-lg bg-success/10">
-                  <div className="text-sm text-muted-foreground mb-1">Аптайм</div>
-                  <div className="text-lg font-bold text-success">{product.uptimePercent}</div>
-                </div>
-                <div className="text-center p-4 rounded-lg bg-info/10">
-                  <div className="text-sm text-muted-foreground mb-1">ROI прогресс</div>
-                  <div className="text-lg font-bold text-info">{product.roiPercent}%</div>
-                  <Progress value={parseFloat(product.roiPercent)} className="w-full mt-2" />
-                </div>
+              {/* ROI прогресс */}
+              <div className="p-4 rounded-lg bg-secondary/10">
+                <div className="text-sm text-muted-foreground mb-1">ROI прогресс</div>
+                <div className="text-lg font-bold text-secondary">{product.roiPercent}%</div>
+                <Progress value={parseFloat(product.roiPercent)} className="w-full mt-2" />
               </div>
             </>
           )}
