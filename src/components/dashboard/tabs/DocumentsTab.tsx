@@ -36,30 +36,30 @@ export const DocumentsTab = () => {
   const documents: Document[] = [
     {
       id: "contract-001",
-      title: "Договор оказания услуг майнинга",
-      description: "Типовой договор на оказание услуг по майнингу криптовалют",
+      title: "Договор купли продажи оборудования",
+      description: "Типовой договор на покупку майнинг оборудования",
       category: "contract",
       type: "PDF",
       size: "247 KB",
-      watermark: true
+      watermark: false
     },
     {
       id: "act-001",
-      title: "Акт выполненных работ - январь 2024",
+      title: "Акт выполненных работ за месяц",
       description: "Детализация выполненных работ за отчетный период",
       category: "act",
       type: "PDF", 
       size: "156 KB",
-      watermark: true
+      watermark: false
     },
     {
       id: "guide-001",
-      title: "Руководство по работе с пулом",
-      description: "Подробная инструкция для участников пула WHITE",
+      title: "Договор аренды",
+      description: "Договор аренды помещения для майнинг оборудования",
       category: "guide",
       type: "PDF",
       size: "1.2 MB",
-      watermark: true
+      watermark: false
     },
     {
       id: "legal-001",
@@ -68,34 +68,25 @@ export const DocumentsTab = () => {
       category: "legal",
       type: "PDF",
       size: "89 KB",
-      watermark: true
+      watermark: false
     },
     {
       id: "financial-001", 
-      title: "Финансовая отчетность Q1 2024",
-      description: "Консолидированная отчетность по операциям пула",
+      title: "Договор товарищества для ИП и ООО",
+      description: "Договор о совместной деятельности для ИП и ООО",
       category: "financial",
       type: "PDF",
       size: "342 KB",
-      watermark: true
+      watermark: false
     },
     {
       id: "contract-002",
-      title: "Дополнительное соглашение № 1",
-      description: "Изменения к основному договору оказания услуг",
+      title: "Приложение к договору купли продажи",
+      description: "Дополнительные условия к договору купли продажи оборудования",
       category: "contract",
       type: "PDF",
       size: "123 KB", 
-      watermark: true
-    },
-    {
-      id: "guide-002",
-      title: "Техническая спецификация оборудования",
-      description: "Характеристики используемых майнинг-устройств",
-      category: "guide",
-      type: "PDF",
-      size: "856 KB",
-      watermark: true
+      watermark: false
     },
     {
       id: "legal-002",
@@ -104,14 +95,14 @@ export const DocumentsTab = () => {
       category: "legal", 
       type: "PDF",
       size: "234 KB",
-      watermark: true
+      watermark: false
     }
   ];
 
   const categories = [
     { id: 'contract', name: 'Договоры', icon: FileCheck, count: 2 },
     { id: 'act', name: 'Акты', icon: Receipt, count: 1 },
-    { id: 'guide', name: 'Руководства', icon: BookOpen, count: 2 },
+    { id: 'guide', name: 'Руководства', icon: BookOpen, count: 1 },
     { id: 'legal', name: 'Правовые', icon: Shield, count: 2 },
     { id: 'financial', name: 'Финансовые', icon: Building, count: 1 }
   ];
@@ -214,11 +205,6 @@ export const DocumentsTab = () => {
                       {doc.type}
                     </Badge>
                   </div>
-                  {doc.watermark && (
-                    <Badge variant="outline" className="text-xs">
-                      ДЕМО
-                    </Badge>
-                  )}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -258,6 +244,13 @@ export const DocumentsTab = () => {
           </p>
         </div>
       )}
+
+      {/* Navigation Button */}
+      <div className="flex justify-center pt-6">
+        <Button className="px-8">
+          Перейти к видео
+        </Button>
+      </div>
 
       {/* Document Viewer Modal */}
       <Dialog open={!!selectedDocument} onOpenChange={() => setSelectedDocument(null)}>

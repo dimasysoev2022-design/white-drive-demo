@@ -19,15 +19,11 @@ export const Header = ({ userEmail, onContact }: HeaderProps) => {
           </div>
           <div>
             <h1 className="text-xl font-bold text-gradient">WHITE</h1>
-            <p className="text-xs text-muted-foreground">Демо-режим</p>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center space-x-3">
-          <Badge variant="secondary" className="hidden sm:inline-flex">
-            ДЕМО
-          </Badge>
           <ThemeToggle />
           <Button 
             variant="outline" 

@@ -133,32 +133,34 @@ export const OverviewTab = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <CheckCircle className="w-5 h-5 mr-2 text-primary" />
-              Сегодня рекомендуем
+              Рекомендуем изучить
             </CardTitle>
-            <CardDescription>
-              Рекомендуемые задачи
-            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {todayTasks.map((task) => (
-              <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-fast">
-                <div className={`w-4 h-4 rounded border-2 mt-0.5 ${
-                  task.completed 
-                    ? 'bg-primary border-primary' 
-                    : 'border-muted-foreground'
-                }`}>
-                  {task.completed && <CheckCircle className="w-3 h-3 text-primary-foreground" />}
-                </div>
-                <span className={`text-sm ${
-                  task.completed ? 'line-through text-muted-foreground' : 'text-foreground'
-                }`}>
-                  {task.title}
-                </span>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-fast">
+              <div className="w-4 h-4 rounded border-2 mt-0.5 border-muted-foreground">
               </div>
-            ))}
+              <span className="text-sm text-foreground">
+                Изучить предыдущие наши продукты и их финансовый результат
+              </span>
+            </div>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-fast">
+              <div className="w-4 h-4 rounded border-2 mt-0.5 border-muted-foreground">
+              </div>
+              <span className="text-sm text-foreground">
+                Изучить документы, которые будут подписываться на момент покупки
+              </span>
+            </div>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-fast">
+              <div className="w-4 h-4 rounded border-2 mt-0.5 border-muted-foreground">
+              </div>
+              <span className="text-sm text-foreground">
+                Посмотреть видео, которые мы для вас подготовили, чтобы вам было проще понять продукт
+              </span>
+            </div>
             <Button className="w-full mt-4" variant="outline">
               <ArrowRight className="w-4 h-4 mr-2" />
-              Перейти к дашбордам
+              Перейти к документам
             </Button>
           </CardContent>
         </Card>
