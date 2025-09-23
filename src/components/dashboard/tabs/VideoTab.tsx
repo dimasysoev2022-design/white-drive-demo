@@ -33,9 +33,9 @@ export const VideoTab = () => {
   const videos: Video[] = [
     {
       id: "video-001",
-      title: "Обзор платформы WHITE: как это работает",
-      description: "Подробный разбор архитектуры пула, принципов распределения доходов и технических особенностей",
-      duration: "3:24",
+      title: "Ваш первый шаг в майнинг вместе с White",
+      description: "Короткое знакомство: что такое демо-режим, зачем мы его сделали и как работает наше сообщество. Вы увидите, что в майнинг можно заходить безопасно и прозрачно — даже без опыта.",
+      duration: "4:15",
       thumbnail: "overview",
       category: "overview",
       views: 1247,
@@ -43,19 +43,19 @@ export const VideoTab = () => {
     },
     {
       id: "video-002", 
-      title: "Настройка и подключение майнеров",
-      description: "Пошаговая инструкция по подключению оборудования к пулу WHITE",
-      duration: "5:17",
-      thumbnail: "technical",
-      category: "technical", 
+      title: "White: люди, миссия, опыт",
+      description: "Расскажем, кто стоит за проектом, какой у нас опыт в крипте и почему появился продукт White. Вы узнаете, что для нас это не просто бизнес, а сообщество и ценность, которую мы создаём для клиентов.",
+      duration: "6:32",
+      thumbnail: "overview",
+      category: "overview", 
       views: 892,
       featured: false
     },
     {
       id: "video-003",
-      title: "Анализ дашбордов и метрик",
-      description: "Как читать и интерпретировать данные в панели управления",
-      duration: "4:33",
+      title: "Навигация по личному кабинету",
+      description: "Пошаговый разбор интерфейса: где смотреть доходность, как управлять асиком, где хранится отчётность и как работает система начислений. Всё просто и прозрачно.",
+      duration: "8:45",
       thumbnail: "guide",
       category: "guide",
       views: 756,
@@ -63,18 +63,28 @@ export const VideoTab = () => {
     },
     {
       id: "video-004",
-      title: "Вебинар: Стратегии майнинга 2024",
-      description: "Записи вебинара о текущих трендах и перспективах криптомайнинга",
-      duration: "28:45",
+      title: "Почему майнинг выгоднее привычных инвестиций",
+      description: "Объясним, чем майнинг в White отличается от вкладов, недвижимости или просто покупки биткоина. Сравним по доходности, рискам и удобству.",
+      duration: "12:20",
       thumbnail: "webinar", 
       category: "webinar",
       views: 2134,
       featured: false
+    },
+    {
+      id: "video-005",
+      title: "Всё под ключ и без лишних рисков",
+      description: "Финальное видео, где мы объясняем, почему работа с White — это легальность, стабильность и доход в биткоине без головной боли. Здесь вы поймёте, почему нас выбирают клиенты.",
+      duration: "7:55",
+      thumbnail: "technical",
+      category: "technical",
+      views: 1456,
+      featured: true
     }
   ];
 
   const categories = [
-    { id: 'overview', name: 'Обзор', count: 1 },
+    { id: 'overview', name: 'Обзор', count: 2 },
     { id: 'technical', name: 'Техническое', count: 1 },
     { id: 'guide', name: 'Руководства', count: 1 },
     { id: 'webinar', name: 'Вебинары', count: 1 }
