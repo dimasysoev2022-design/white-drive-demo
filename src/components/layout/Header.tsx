@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "./ThemeToggle";
-import { Shield, MessageCircle, Clock } from "lucide-react";
+import { Shield, MessageCircle } from "lucide-react";
 
 interface HeaderProps {
   userEmail: string;
@@ -10,29 +9,6 @@ interface HeaderProps {
 }
 
 export const Header = ({ userEmail, onContact }: HeaderProps) => {
-  const [timeLeft, setTimeLeft] = useState(72 * 3600); // 72 hours in seconds
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => Math.max(0, prev - 1));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const getTimeColor = () => {
-    if (timeLeft > 24 * 3600) return "text-success";
-    if (timeLeft > 6 * 3600) return "text-warning";
-    return "text-destructive";
-  };
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -43,18 +19,7 @@ export const Header = ({ userEmail, onContact }: HeaderProps) => {
           </div>
           <div>
             <h1 className="text-xl font-bold text-gradient">WHITE</h1>
-            <p className="text-xs text-muted-foreground">Тест-драйв</p>
-          </div>
-        </div>
-
-        {/* Timer */}
-        <div className="flex items-center space-x-2">
-          <Clock className="w-4 h-4 text-muted-foreground" />
-          <div className="text-center">
-            <div className={`font-mono text-lg font-bold ${getTimeColor()}`}>
-              {formatTime(timeLeft)}
-            </div>
-            <div className="text-xs text-muted-foreground">осталось</div>
+            <p className="text-xs text-muted-foreground">Демо-режим</p>
           </div>
         </div>
 

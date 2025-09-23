@@ -31,7 +31,7 @@ export const OverviewTab = () => {
     {
       title: "Аптайм",
       value: "99.8%",
-      description: "За период тест-драйва (3 дня)",
+      description: "За период демонстрации (3 дня)",
       icon: Activity,
       trend: { direction: 'up' as const, value: "+0.2%", label: "стабильно" }
     },
@@ -44,7 +44,7 @@ export const OverviewTab = () => {
     }
   ];
 
-  // Ежедневная статистика за период тест-драйва (3 дня)
+  // Ежедневная статистика за период демонстрации (3 дня)
   const dailyStats = [
     { date: "15.01.2024", accrual_btc: "0.00032450", accrual_rub: "13420" },
     { date: "16.01.2024", accrual_btc: "0.00034120", accrual_rub: "14680" },
@@ -108,7 +108,7 @@ export const OverviewTab = () => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <DollarSign className="w-5 h-5 mr-2 text-primary" />
-            За период тест-драйва (3 дня) — Общая доходность
+            За период демонстрации (3 дня) — Общая доходность
           </CardTitle>
           <CardDescription>
             Суммарные начисления за демонстрационный период
@@ -149,7 +149,7 @@ export const OverviewTab = () => {
                 <DollarSign className="w-5 h-5 mr-2 text-primary" />
                 Начисления ({currencyMode === 'rub' ? 'RUB' : 'BTC'})
               </CardTitle>
-              <CardDescription>За период тест-драйва (3 дня)</CardDescription>
+              <CardDescription>За период демонстрации (3 дня)</CardDescription>
             </div>
             <div className="flex rounded-lg bg-muted p-1">
               <Button
@@ -198,7 +198,7 @@ export const OverviewTab = () => {
         <CardHeader>
           <CardTitle>Ежедневная статистика</CardTitle>
           <CardDescription>
-            Начисления за каждый день периода тест-драйва
+            Начисления за каждый день периода демонстрации
           </CardDescription>
         </CardHeader>
         <CardContent>

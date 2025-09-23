@@ -27,7 +27,7 @@ import {
 export const DashboardsTab = () => {
   const [currencyMode, setCurrencyMode] = useState<'rub' | 'btc'>('rub');
 
-  // Mock data за период тест-драйва (3 дня)
+  // Mock data за период демонстрации (3 дня)
   const uptimeData = [
     { date: '15.01', uptime: 99.8 },
     { date: '16.01', uptime: 99.9 },
@@ -67,7 +67,7 @@ export const DashboardsTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gradient">Дашборды</h2>
-          <p className="text-muted-foreground">За период тест-драйва (3 дня)</p>
+          <p className="text-muted-foreground">За период демонстрации (3 дня)</p>
         </div>
         <div className="flex rounded-lg bg-muted p-1">
           <Button
@@ -104,7 +104,7 @@ export const DashboardsTab = () => {
                     <Activity className="w-5 h-5 mr-2 text-primary" />
                     Аптайм пула
                   </CardTitle>
-                  <CardDescription>За период тест-драйва (3 дня)</CardDescription>
+                  <CardDescription>За период демонстрации (3 дня)</CardDescription>
                 </div>
                 <Badge className="bg-success/10 text-success border-success/20">
                   99.8%
@@ -144,7 +144,7 @@ export const DashboardsTab = () => {
                 <Zap className="w-5 h-5 mr-2 text-primary" />
                 Производительность (TH/s)
               </CardTitle>
-              <CardDescription>За период тест-драйва (3 дня)</CardDescription>
+              <CardDescription>За период демонстрации (3 дня)</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -175,7 +175,7 @@ export const DashboardsTab = () => {
                 <DollarSign className="w-5 h-5 mr-2 text-primary" />
                 Начисления ({currencyMode === 'rub' ? 'RUB' : 'BTC'})
               </CardTitle>
-              <CardDescription>За период тест-драйва (3 дня)</CardDescription>
+              <CardDescription>За период демонстрации (3 дня)</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
