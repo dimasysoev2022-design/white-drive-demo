@@ -21,9 +21,11 @@ interface Video {
   description: string;
   duration: string;
   thumbnail: string;
+  thumbnailUrl?: string; // optional direct image url for cover
   category: 'overview' | 'technical' | 'guide' | 'webinar';
   views: number;
   featured: boolean;
+  embedUrl?: string;
 }
 
 export const VideoTab = () => {
@@ -35,11 +37,13 @@ export const VideoTab = () => {
       id: "video-001",
       title: "Ваш первый шаг в майнинг вместе с White",
       description: "Короткое знакомство: что такое демо-режим, зачем мы его сделали и как работает наше сообщество. Вы увидите, что в майнинг можно заходить безопасно и прозрачно — даже без опыта.",
-      duration: "4:15",
+      duration: "3:40",
       thumbnail: "overview",
+      thumbnailUrl: "https://drive.google.com/thumbnail?id=1N6igDcl7E36bmdh_yWYWujHoOeRYe_Qh&sz=w1200",
       category: "overview",
       views: 1247,
-      featured: true
+      featured: true,
+      embedUrl: "https://drive.google.com/file/d/1N6igDcl7E36bmdh_yWYWujHoOeRYe_Qh/preview"
     },
     {
       id: "video-002", 
@@ -79,7 +83,7 @@ export const VideoTab = () => {
       thumbnail: "technical",
       category: "technical",
       views: 1456,
-      featured: true
+      featured: false
     }
   ];
 
@@ -141,8 +145,19 @@ export const VideoTab = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {featuredVideos.map(video => (
               <Card key={video.id} className="card-elevated transition-smooth hover:glow cursor-pointer group">
-                <div className="relative aspect-video bg-gradient-to-br bg-muted rounded-t-lg overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-80`} />
+                <div className="relative aspect-video rounded-t-lg overflow-hidden bg-muted">
+                  {video.thumbnailUrl ? (
+                    <img src={video.thumbnailUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover" />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-80`} />
+                  )}
+                  {!video.embedUrl && (
+                    <div className="absolute top-2 right-2 z-10">
+                      <Badge className="bg-black/70 text-white border-white/10">
+                        Скоро
+                      </Badge>
+                    </div>
+                  )}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Button 
                       size="lg" 
@@ -152,7 +167,7 @@ export const VideoTab = () => {
                       <Play className="w-6 h-6 ml-1" />
                     </Button>
                   </div>
-                  <div className="absolute bottom-2 right-2">
+              <div className="absolute bottom-2 right-2">
                     <Badge className="bg-black/60 text-white border-none">
                       {video.duration}
                     </Badge>
@@ -217,9 +232,20 @@ export const VideoTab = () => {
         <h3 className="text-lg font-semibold">Все видео</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredVideos.map(video => (
-            <Card key={video.id} className="card-elevated transition-smooth hover:glow cursor-pointer group">
+              <Card key={video.id} className="card-elevated transition-smooth hover:glow cursor-pointer group">
               <div className="relative aspect-video bg-muted rounded-t-lg overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-60`} />
+                {video.thumbnailUrl ? (
+                  <img src={video.thumbnailUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <div className={`absolute inset-0 bg-gradient-to-br ${getThumbnailGradient(video.thumbnail)} opacity-60`} />
+                )}
+                {!video.embedUrl && (
+                  <div className="absolute top-2 right-2 z-10">
+                    <Badge className="bg-black/70 text-white border-white/10 text-xs">
+                      Скоро
+                    </Badge>
+                  </div>
+                )}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Button 
                     size="sm" 
@@ -264,60 +290,60 @@ export const VideoTab = () => {
       <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
         <DialogContent className="max-w-4xl p-0">
           <div className="relative">
-            {/* Mock Video Player */}
-            <div className="aspect-video bg-black relative overflow-hidden rounded-t-lg">
-              <div className={`absolute inset-0 bg-gradient-to-br ${selectedVideo ? getThumbnailGradient(selectedVideo.thumbnail) : 'from-primary to-accent'} opacity-40`} />
-              
-              {/* Video Controls Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-white text-center space-y-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto">
-                    <Play className="w-8 h-8 ml-1" />
-                  </div>
-                  <p className="text-lg font-medium">
-                    {selectedVideo?.title}
-                  </p>
-                  <Badge className="bg-black/60 text-white">
-                    Демо-версия плеера
-                  </Badge>
-                </div>
+            {/* Real Player if embedUrl is provided, else mock */}
+            {selectedVideo?.embedUrl ? (
+              <div className="aspect-video bg-black relative overflow-hidden rounded-t-lg">
+                <iframe
+                  src={selectedVideo.embedUrl}
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+                {/* Реальное видео — без оверлея "Скоро" */}
+                {/* Удалено дублирующее закрытие. Встроенная кнопка — в DialogContent. */}
               </div>
-
-              {/* Video Progress */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                <div className="flex items-center space-x-4 text-white">
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
-                    <SkipBack className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
-                    <Play className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
-                    <SkipForward className="w-4 h-4" />
-                  </Button>
-                  <div className="flex-1 h-1 bg-white/30 rounded">
-                    <div className="w-1/3 h-full bg-primary rounded" />
+            ) : (
+              <div className="aspect-video bg-black relative overflow-hidden rounded-t-lg">
+                <div className={`absolute inset-0 bg-gradient-to-br ${selectedVideo ? getThumbnailGradient(selectedVideo.thumbnail) : 'from-primary to-accent'} opacity-40`} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-white text-center space-y-4">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+                      <Play className="w-8 h-8 ml-1" />
+                    </div>
+                    <p className="text-lg font-medium">
+                      {selectedVideo?.title}
+                    </p>
+                    <Badge className="bg-black/60 text-white">
+                      Демо-версия плеера
+                    </Badge>
                   </div>
-                  <span className="text-sm">1:15 / {selectedVideo?.duration}</span>
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
-                    <Volume2 className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
-                    <Maximize className="w-4 h-4" />
-                  </Button>
                 </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                  <div className="flex items-center space-x-4 text-white">
+                    <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                      <SkipBack className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                      <Play className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                      <SkipForward className="w-4 h-4" />
+                    </Button>
+                    <div className="flex-1 h-1 bg-white/30 rounded">
+                      <div className="w-1/3 h-full bg-primary rounded" />
+                    </div>
+                    <span className="text-sm">1:15 / {selectedVideo?.duration}</span>
+                    <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                      <Volume2 className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+                      <Maximize className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                {/* Удалено дублирующее закрытие. Встроенная кнопка — в DialogContent. */}
               </div>
-
-              {/* Close button */}
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="absolute top-4 right-4 text-white hover:bg-white/20"
-                onClick={() => setSelectedVideo(null)}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
+            )}
 
             {/* Video Info */}
             <div className="p-6 space-y-4">

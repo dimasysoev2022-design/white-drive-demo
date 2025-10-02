@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -9,10 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   HelpCircle, 
   Send, 
-  CheckCircle,
-  Search,
   MessageCircle,
-  Clock,
   Shield,
   Zap,
   DollarSign,
@@ -29,7 +25,7 @@ interface FAQ {
 }
 
 export const QuestionsTab = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  // search removed
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -128,10 +124,8 @@ export const QuestionsTab = () => {
   ];
 
   const filteredFaqs = faqs.filter(faq => {
-    const matchesSearch = faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         faq.answer.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || faq.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesCategory;
   });
 
   const popularFaqs = faqs.filter(faq => faq.popular);
@@ -192,75 +186,8 @@ export const QuestionsTab = () => {
         {/* FAQ Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Popular FAQ */}
-          {popularFaqs.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold flex items-center">
-                <MessageCircle className="w-5 h-5 mr-2 text-primary" />
-                Популярные вопросы
-              </h3>
-              <div className="grid grid-cols-1 gap-3">
-                {popularFaqs.slice(0, 3).map(faq => {
-                  const CategoryIcon = getCategoryIcon(faq.category);
-                  return (
-                    <Card key={faq.id} className="card-elevated">
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-base pr-4">{faq.question}</CardTitle>
-                          <Badge variant="outline" className={getCategoryColor(faq.category)}>
-                            <CategoryIcon className="w-3 h-3 mr-1" />
-                            {categories.find(c => c.id === faq.category)?.name}
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <p className="text-sm text-muted-foreground line-clamp-3">
-                          {faq.answer}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
-          {/* Search */}
-          <div className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Поиск по вопросам..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant={selectedCategory === null ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(null)}
-              >
-                Все вопросы ({faqs.length})
-              </Button>
-              {categories.filter(cat => cat.count > 0).map(category => {
-                const Icon = category.icon;
-                return (
-                  <Button
-                    key={category.id}
-                    variant={selectedCategory === category.id ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    <Icon className="w-4 h-4 mr-2" />
-                    {category.name} ({faqs.filter(f => f.category === category.id).length})
-                  </Button>
-                );
-              })}
-            </div>
-          </div>
+          {/* Search removed */}
 
           {/* FAQ Accordion */}
           <div className="space-y-4">
@@ -308,7 +235,7 @@ export const QuestionsTab = () => {
         </div>
 
         {/* Contact Call-to-Action */}
-        <div className="space-y-4">
+        <div className="space-y-4 pt-12">
           <Card className="card-elevated">
             <CardHeader className="text-center">
               <CardTitle className="flex items-center justify-center">
@@ -324,43 +251,22 @@ export const QuestionsTab = () => {
                 Напишите нам в Telegram или позвоните:
               </p>
               <div className="space-y-3 mb-4">
-                <Button variant="outline" className="w-full">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  @fred_parkin
-                </Button>
+                <a href="https://t.me/IlyaWhiteMining" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    @IlyaWhiteMining
+                  </Button>
+                </a>
                 <Button variant="outline" className="w-full">
                   <Phone className="w-4 h-4 mr-2" />
-                  8-916-235-44-00
+                  8-925-239-39-73
                 </Button>
               </div>
-              <div className="text-sm text-muted-foreground">
-                <p className="mb-2">Время работы:</p>
-                <p>ПН-ПТ: 10:00-19:00 (МСК)</p>
-                <p>СБ-ВС: выходной</p>
-              </div>
+              {/* Working hours removed per request */}
             </CardContent>
           </Card>
 
-          {/* Contact Info */}
-          <Card className="card-elevated">
-            <CardHeader>
-              <CardTitle className="text-base">Другие способы связи</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                <span>Telegram: @fred_parkin</span>
-              </div>
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                <span>Телефон: 8-916-235-44-00</span>
-              </div>
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                <span>Время работы: пн-пт 10:00-19:00 МСК</span>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Contact Info removed per design request */}
         </div>
       </div>
     </div>

@@ -15,10 +15,14 @@ import {
   Shield,
   Zap,
   DollarSign,
+  PiggyBank,
   FileText,
   Phone,
   Mail,
-  Send
+  Send,
+  Copyright,
+  IdCard,
+  MapPin
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -151,16 +155,85 @@ export const NextStepsTab = () => {
       </div>
 
 
-      {/* CTA Section */}
-      <div className="flex flex-col items-center gap-6 mb-8">
-        <Button size="lg" className="h-16 text-lg w-full max-w-md">
-          <FileText className="w-6 h-6 mr-3" />
-          Запросить коммерческое предложение
-        </Button>
-        <Button size="lg" variant="outline" className="h-16 text-lg w-full max-w-md">
-          <MessageCircle className="w-6 h-6 mr-3" />
-          Связаться с менеджером
-        </Button>
+      {/* Pricing Section (3 packages) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Старт */}
+        <Card className="card-elevated">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="rounded-full">ПАКЕТ</Badge>
+              <CardTitle>Старт</CardTitle>
+            </div>
+            <CardDescription>
+              <div className="h-[1px] bg-border/80 mt-4" />
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl md:text-5xl font-bold tracking-tight mb-4">420 000 ₽</div>
+            <div className="font-semibold mb-3">В стоимость входит:</div>
+            <ul className="space-y-3 text-sm md:text-base">
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> 1 единица оборудования</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> настройка и подключение</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> включение в общую экономику<br/>(совместный майнинг)</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> холодный кошелёк в виде карты</li>
+            </ul>
+            <div className="mt-6">
+              <a href="https://t.me/IlyaWhiteMining" target="_blank" rel="noopener noreferrer">
+                <Button size="lg" className="w-full">Обсудить</Button>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Стандарт */}
+        <Card className="card-elevated">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="rounded-full">ПАКЕТ</Badge>
+              <CardTitle>Стандарт</CardTitle>
+            </div>
+            <CardDescription>
+              <div className="h-[1px] bg-border/80 mt-4" />
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl md:text-5xl font-bold tracking-tight mb-4">2 000 000 ₽</div>
+            <div className="font-semibold mb-3">В стоимость входит:</div>
+            <ul className="space-y-3 text-sm md:text-base">
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> 5 единиц оборудования</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> настройка и подключение</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> включение в общую экономику<br/>(совместный майнинг)</li>
+              <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 mt-1 text-primary" /> холодный кошелёк в виде карты</li>
+            </ul>
+            <div className="mt-6">
+              <a href="https://t.me/IlyaWhiteMining" target="_blank" rel="noopener noreferrer">
+                <Button size="lg" className="w-full">Обсудить</Button>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Свой */}
+        <Card className="card-elevated bg-black text-white border-border/30">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Badge className="rounded-full bg-white/10 text-white border border-white/20">ПАКЕТ</Badge>
+              <CardTitle className="text-white">Свой</CardTitle>
+            </div>
+            <CardDescription>
+              <div className="h-[1px] bg-white/20 mt-4" />
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-full flex flex-col">
+            <div>
+              <div className="text-4xl md:text-5xl font-bold tracking-tight mb-4 leading-tight mt-1">Индивидуальные условия</div>
+            </div>
+            <div className="min-h-[140px]" />
+            <a href="https://t.me/IlyaWhiteMining" target="_blank" rel="noopener noreferrer" className="mt-6">
+              <Button size="lg" className="w-full">Обсудить</Button>
+            </a>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Old CTA Section - removing content */}
@@ -303,10 +376,10 @@ export const NextStepsTab = () => {
         </Card>
         
         <Card className="text-center p-6">
-          <Zap className="w-8 h-8 text-primary mx-auto mb-3" />
-          <h4 className="font-semibold mb-2">99.8% аптайм</h4>
+          <PiggyBank className="w-8 h-8 text-primary mx-auto mb-3" />
+          <h4 className="font-semibold mb-2">Пассивный доход</h4>
           <p className="text-sm text-muted-foreground">
-            Стабильная работа оборудования круглосуточно
+            Доход без ежедневного участия
           </p>
         </Card>
         
@@ -323,42 +396,54 @@ export const NextStepsTab = () => {
       <Card className="card-elevated">
         <CardHeader>
           <CardTitle className="text-center">Контактная информация</CardTitle>
-          <CardDescription className="text-center">
-            Другие способы связи с командой WHITE
-          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <Mail className="w-4 h-4 text-primary mr-3" />
-                <div>
-                  <div className="font-medium">Email</div>
-                  <div className="text-sm text-muted-foreground">sales@white-platform.ru</div>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <Phone className="w-4 h-4 text-primary mr-3" />
-                <div>
-                  <div className="font-medium">Телефон</div>
-                  <div className="text-sm text-muted-foreground">8-916-235-44-00</div>
-                </div>
+          {/* Блок с контактами (Email/Телефон/Telegram/Режим работы) удален по запросу */}
+
+          {/* Legal info (симметричная сетка 2x3) */}
+          <div className="mt-6 pt-6 border-t border-border/60 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Row 1 */}
+            <div className="flex items-start">
+              <Copyright className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div className="font-medium"> 2025 | Все права защищены </div>
+            </div>
+            <div className="flex items-start">
+              <FileText className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div>
+                <div className="font-medium">ОГРНИП</div>
+                <div className="text-sm text-muted-foreground">325527500079221</div>
               </div>
             </div>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <MessageCircle className="w-4 h-4 text-primary mr-3" />
-                <div>
-                  <div className="font-medium">Telegram</div>
-                  <div className="text-sm text-muted-foreground">@fred_parkin</div>
-                </div>
+
+            {/* Row 2 */}
+            <div className="flex items-start">
+              <IdCard className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div>
+                <div className="font-medium">ИП</div>
+                <div className="text-sm text-muted-foreground">Грачев Сергей Владимирович</div>
               </div>
-              <div className="flex items-center">
-                <Clock className="w-4 h-4 text-primary mr-3" />
-                <div>
-                  <div className="font-medium">Режим работы</div>
-                  <div className="text-sm text-muted-foreground">пн-пт 10:00-19:00 МСК</div>
-                </div>
+            </div>
+            <div className="flex items-start">
+              <MapPin className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div>
+                <div className="font-medium">Юр. адрес</div>
+                <div className="text-sm text-muted-foreground">603124, Нижний Новгород, Лесной городок 4а, кв. 75</div>
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="flex items-start">
+              <FileText className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div>
+                <div className="font-medium">ИНН</div>
+                <div className="text-sm text-muted-foreground">525714685436</div>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <Mail className="w-4 h-4 text-primary mr-3 mt-0.5" />
+              <div>
+                <div className="font-medium">Email</div>
+                <div className="text-sm text-muted-foreground">svgrachev110@gmail.com</div>
               </div>
             </div>
           </div>

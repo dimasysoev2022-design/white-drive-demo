@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +18,13 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+const PARTNERSHIP_DOC_URL =
+  "https://docs.google.com/document/d/1IylpgVm5SmWM1shxKLkhejMXZxlsLsl_EdWUXHyijXU/edit?tab=t.0";
+const PARTNERSHIP_DOC_EXPORT_TXT_URL =
+  "https://docs.google.com/document/d/1IylpgVm5SmWM1shxKLkhejMXZxlsLsl_EdWUXHyijXU/export?format=txt";
+const PARTNERSHIP_DOC_EXPORT_HTML_URL =
+  "https://docs.google.com/document/d/1IylpgVm5SmWM1shxKLkhejMXZxlsLsl_EdWUXHyijXU/export?format=html";
+
 interface Document {
   id: string;
   title: string;
@@ -26,86 +33,80 @@ interface Document {
   type: string;
   size: string;
   watermark: boolean;
+  entityType?: 'individual' | 'legal' | 'both';
 }
 
 export const DocumentsTab = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [selectedEntityType, setSelectedEntityType] = useState<'all' | 'individual' | 'legal'>('all');
+  const [googleDocText, setGoogleDocText] = useState<string | null>(null);
+  const [googleDocHtml, setGoogleDocHtml] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadGoogleDoc = async () => {
+      if (selectedDocument?.id !== "financial-001") {
+        setGoogleDocText(null);
+        return;
+      }
+      try {
+        // Try HTML first to preserve formatting
+        const htmlResp = await fetch(PARTNERSHIP_DOC_EXPORT_HTML_URL, { credentials: "omit" });
+        if (htmlResp.ok) {
+          const html = await htmlResp.text();
+          setGoogleDocHtml(html);
+          setGoogleDocText(null);
+          return;
+        }
+      } catch {}
+      try {
+        const txtResp = await fetch(PARTNERSHIP_DOC_EXPORT_TXT_URL, { credentials: "omit" });
+        if (!txtResp.ok) throw new Error(`HTTP ${txtResp.status}`);
+        const txt = await txtResp.text();
+        setGoogleDocText(txt);
+        setGoogleDocHtml(null);
+      } catch {
+        setGoogleDocText(null);
+        setGoogleDocHtml(null);
+      }
+    };
+    loadGoogleDoc();
+  }, [selectedDocument]);
 
   const documents: Document[] = [
     {
       id: "contract-001",
-      title: "Договор купли продажи оборудования для физлиц",
+      title: "Договор купли продажи оборудования для физических лиц",
       description: "Типовой договор на покупку майнинг оборудования для физических лиц",
       category: "contract",
       type: "PDF",
       size: "247 KB",
-      watermark: false
-    },
-    {
-      id: "contract-002",
-      title: "Договор купли продажи оборудования для юрлиц",
-      description: "Типовой договор на покупку майнинг оборудования для юридических лиц",
-      category: "contract",
-      type: "PDF",
-      size: "251 KB",
-      watermark: false
+      watermark: false,
+      entityType: "individual"
     },
     {
       id: "contract-003",
-      title: "Договор аренды оборудования для физлиц",
+      title: "Договор аренды оборудования для физических лиц",
       description: "Договор аренды майнинг оборудования для физических лиц",
       category: "contract",
       type: "PDF",
       size: "298 KB",
-      watermark: false
+      watermark: false,
+      entityType: "individual"
     },
     {
       id: "contract-004",
-      title: "Договор аренды оборудования для юрлиц",
-      description: "Договор аренды майнинг оборудования для юридических лиц",
+      title: "Агентский договор для покупки оборудования",
+      description: "Типовой договор на покупку майнинг оборудования",
       category: "contract",
       type: "PDF",
       size: "302 KB",
-      watermark: false
+      watermark: false,
+      entityType: "legal"
     },
-    {
-      id: "contract-005",
-      title: "Приложение к договору купли продажи",
-      description: "Дополнительные условия к договору купли продажи оборудования",
-      category: "contract",
-      type: "PDF",
-      size: "123 KB", 
-      watermark: false
-    },
-    {
-      id: "act-001",
-      title: "Акт выполненных работ за месяц",
-      description: "Детализация выполненных работ за отчетный период",
-      category: "act",
-      type: "PDF", 
-      size: "156 KB",
-      watermark: false
-    },
-    {
-      id: "legal-001",
-      title: "Политика конфиденциальности",
-      description: "Правила обработки персональных данных участников",
-      category: "legal",
-      type: "PDF",
-      size: "89 KB",
-      watermark: false
-    },
-    {
-      id: "legal-002",
-      title: "Пользовательское соглашение",
-      description: "Условия использования сервисов WHITE",
-      category: "legal", 
-      type: "PDF",
-      size: "234 KB",
-      watermark: false
-    },
+    
+    
     {
       id: "financial-001", 
       title: "Договор товарищества для ИП и ООО",
@@ -113,13 +114,14 @@ export const DocumentsTab = () => {
       category: "financial",
       type: "PDF",
       size: "342 KB",
-      watermark: false
+      watermark: false,
+      entityType: "legal"
     }
   ];
 
   const categories = [
-    { id: 'contract', name: 'Договоры', icon: FileCheck, count: 5 },
-    { id: 'act', name: 'Акты', icon: Receipt, count: 1 },
+    { id: 'contract', name: 'Договоры', icon: FileCheck, count: 3 },
+    { id: 'act', name: 'Акты', icon: Receipt, count: 0 },
     { id: 'legal', name: 'Правовые', icon: Shield, count: 2 },
     { id: 'financial', name: 'Финансовые', icon: Building, count: 1 }
   ];
@@ -141,11 +143,16 @@ export const DocumentsTab = () => {
 
   const filteredDocuments = documents.filter(doc => {
     const matchesCategory = !selectedCategory || doc.category === selectedCategory;
-    return matchesCategory;
+    const matchesEntityType = selectedEntityType === 'all' || 
+      doc.entityType === selectedEntityType || 
+      doc.entityType === 'both';
+    return matchesCategory && matchesEntityType;
   });
 
   const getDocumentContent = (doc: Document) => {
     switch (doc.id) {
+      case "financial-001":
+        return `ДОГОВОР ТОВАРИЩЕСТВА ДЛЯ ИП И ООО\n\n[ЗДЕСЬ НУЖЕН ТОЧНЫЙ ТЕКСТ ИЗ GOOGLE DOCS. ВСТАВЬТЕ ЕГО БЕЗ ИЗМЕНЕНИЙ.]`;
       case "contract-001":
         return `ДОГОВОР КУПЛИ-ПРОДАЖИ ОБОРУДОВАНИЯ № 27/А/2025-1
 г. Москва «27» июня 2025 г.
@@ -339,32 +346,32 @@ export const DocumentsTab = () => {
           <p className="text-muted-foreground">Договоры, акты и документация</p>
         </div>
 
-
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-2">
+        {/* Entity Type Filter Buttons */}
+        <div className="flex gap-3">
           <Button
-            variant={selectedCategory === null ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory(null)}
+            variant={selectedEntityType === 'all' ? 'default' : 'outline'}
+            onClick={() => setSelectedEntityType('all')}
+            className="flex-1"
           >
-            Все документы ({documents.length})
+            Все документы
           </Button>
-          {categories.map(category => {
-            const Icon = category.icon;
-            return (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(category.id)}
-                className="flex items-center"
-              >
-                <Icon className="w-4 h-4 mr-2" />
-                {category.name} ({category.count})
-              </Button>
-            );
-          })}
+          <Button
+            variant={selectedEntityType === 'individual' ? 'default' : 'outline'}
+            onClick={() => setSelectedEntityType('individual')}
+            className="flex-1"
+          >
+            Список документов для физических лиц
+          </Button>
+          <Button
+            variant={selectedEntityType === 'legal' ? 'default' : 'outline'}
+            onClick={() => setSelectedEntityType('legal')}
+            className="flex-1"
+          >
+            Список документов для юридических лиц
+          </Button>
         </div>
+
+        {/* Category Filter removed per design request */}
       </div>
 
       {/* Documents Grid */}
@@ -380,9 +387,23 @@ export const DocumentsTab = () => {
                     <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg mr-3">
                       <CategoryIcon className="w-5 h-5 text-primary" />
                     </div>
-                    <Badge variant="outline" className={getCategoryColor(doc.category)}>
-                      {doc.type}
-                    </Badge>
+                    {doc.id === "financial-001" ? (
+                      <a
+                        href={PARTNERSHIP_DOC_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="focus:outline-none"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Badge variant="outline" className={getCategoryColor(doc.category)}>
+                          {doc.type}
+                        </Badge>
+                      </a>
+                    ) : (
+                      <Badge variant="outline" className={getCategoryColor(doc.category)}>
+                        {doc.type}
+                      </Badge>
+                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -424,12 +445,6 @@ export const DocumentsTab = () => {
         </div>
       )}
 
-      {/* Navigation Button */}
-      <div className="flex justify-center pt-6">
-        <Button className="px-8">
-          Перейти к видео
-        </Button>
-      </div>
 
       {/* Document Viewer Modal */}
       <Dialog open={!!selectedDocument} onOpenChange={() => setSelectedDocument(null)}>
@@ -445,29 +460,34 @@ export const DocumentsTab = () => {
                   {selectedDocument?.description}
                 </p>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => setSelectedDocument(null)}>
-                <X className="w-4 h-4" />
-              </Button>
             </div>
           </DialogHeader>
           
           <div className="flex-1 flex items-center justify-center bg-muted/30 relative overflow-hidden">
-            {/* Demo watermark */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-6xl font-bold text-muted-foreground/20 rotate-45 select-none">
-                ДЕМО ВЕРСИЯ
+            {selectedDocument?.id !== "financial-001" && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="text-6xl font-bold text-muted-foreground/20 rotate-45 select-none">
+                  ДЕМО ВЕРСИЯ
+                </div>
               </div>
-            </div>
-            
-            {/* Document content */}
-            <div className="w-full h-full p-8 bg-white text-black overflow-auto">
-              <div className="max-w-2xl mx-auto space-y-4">
-                <h1 className="text-xl font-bold text-center mb-8">
-                  {selectedDocument?.title}
-                </h1>
-                
-                <div className="space-y-4 text-sm whitespace-pre-line">
-                  {selectedDocument && getDocumentContent(selectedDocument)}
+            )}
+            <div className="w-full h-full p-0 overflow-auto">
+              <div className="mx-auto my-6 bg-transparent text-black max-w-[900px] w-full">
+                <div className="bg-white shadow-xl rounded-sm px-12 py-10 leading-relaxed min-h-[1123px]">
+                  {selectedDocument?.id === "financial-001" && googleDocHtml ? (
+                    <div className="doc-html" dangerouslySetInnerHTML={{ __html: googleDocHtml }} />
+                  ) : (
+                    <>
+                      <h1 className="text-2xl font-bold text-center mb-8">
+                        {selectedDocument?.title}
+                      </h1>
+                      <div className="text-[15px] whitespace-pre-wrap">
+                        {selectedDocument?.id === "financial-001" && googleDocText
+                          ? googleDocText
+                          : selectedDocument && getDocumentContent(selectedDocument)}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

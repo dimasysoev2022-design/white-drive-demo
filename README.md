@@ -71,3 +71,23 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Google Sheets integration
+
+You can manage product data from a Google Sheet.
+
+1. In Google Sheets: File → Publish to the web → select your sheet → CSV. Copy the public URL.
+2. Create `.env.local` in the project root and set:
+
+```
+VITE_PRODUCTS_SHEET_URL=https://docs.google.com/spreadsheets/d/.../pub?output=csv
+```
+
+3. Expected header row in the sheet:
+
+```
+id,name,year,description,purchasePrice,performance,miningStartDate,workingDays,minedBTC,btcPriceRub,currentProfit,roiPercent,paybackPercent,dailyMiningCurrent,uptimePercent
+```
+
+- `id` should be one of: `S21`, `T21`, `M50`.
+- Values are merged on load over the defaults in `OverviewTab`.

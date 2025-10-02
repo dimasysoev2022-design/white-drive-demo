@@ -7,7 +7,7 @@ import { DocumentsTab } from "./tabs/DocumentsTab";
 import { VideoTab } from "./tabs/VideoTab";
 import { QuestionsTab } from "./tabs/QuestionsTab";
 import { NextStepsTab } from "./tabs/NextStepsTab";
-import { BarChart3, FileText, Play, HelpCircle, ArrowRight, Home } from "lucide-react";
+import { BarChart3, FileText, Play, HelpCircle, DollarSign, Home } from "lucide-react";
 
 interface TestDriveDashboardProps {
   userEmail: string;
@@ -27,31 +27,31 @@ export const TestDriveDashboard = ({ userEmail }: TestDriveDashboardProps) => {
       
       <main className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5 mb-6">
-          <TabsTrigger value="overview" className="flex items-center space-x-2">
+        <TabsList className="flex w-full gap-2 overflow-x-auto no-scrollbar sm:grid sm:grid-cols-5 sm:gap-0 sm:w-auto mb-6">
+          <TabsTrigger value="overview" className="flex items-center space-x-2 min-w-max px-3 py-2">
             <Home className="w-4 h-4" />
             <span className="hidden sm:inline">Обзор</span>
           </TabsTrigger>
-          <TabsTrigger value="documents" className="flex items-center space-x-2">
+          <TabsTrigger value="documents" className="flex items-center space-x-2 min-w-max px-3 py-2">
             <FileText className="w-4 h-4" />
             <span className="hidden sm:inline">Документы</span>
           </TabsTrigger>
-          <TabsTrigger value="video" className="flex items-center space-x-2">
+          <TabsTrigger value="video" className="flex items-center space-x-2 min-w-max px-3 py-2">
             <Play className="w-4 h-4" />
             <span className="hidden sm:inline">Видео</span>
           </TabsTrigger>
-          <TabsTrigger value="questions" className="flex items-center space-x-2">
+          <TabsTrigger value="questions" className="flex items-center space-x-2 min-w-max px-3 py-2">
             <HelpCircle className="w-4 h-4" />
             <span className="hidden sm:inline">Вопросы</span>
           </TabsTrigger>
-          <TabsTrigger value="next-steps" className="flex items-center space-x-2">
-            <ArrowRight className="w-4 h-4" />
-            <span className="hidden sm:inline">Далее</span>
+          <TabsTrigger value="next-steps" className="flex items-center space-x-2 min-w-max px-3 py-2">
+            <DollarSign className="w-4 h-4" />
+            <span className="hidden sm:inline">Тарифы</span>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
-          <OverviewTab />
+          <OverviewTab onGoToDocuments={() => setActiveTab('documents')} />
         </TabsContent>
         <TabsContent value="documents">
             <DocumentsTab />
