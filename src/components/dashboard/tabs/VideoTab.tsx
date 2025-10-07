@@ -59,7 +59,7 @@ export const VideoTab = () => {
       id: "video-003",
       title: "Навигация по личному кабинету",
       description: "Пошаговый разбор интерфейса: где смотреть доходность, как управлять асиком, где хранится отчётность и как работает система начислений. Всё просто и прозрачно.",
-      duration: "8:45",
+      duration: "4:34",
       thumbnail: "guide",
       // прямая обложка из Google Drive
       thumbnailUrl: "https://drive.google.com/thumbnail?id=1yrlqsTOVlOSaZEO_rUfLA_1Fb0R44AKZ&sz=w1200",
