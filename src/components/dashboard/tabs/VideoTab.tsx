@@ -61,9 +61,13 @@ export const VideoTab = () => {
       description: "Пошаговый разбор интерфейса: где смотреть доходность, как управлять асиком, где хранится отчётность и как работает система начислений. Всё просто и прозрачно.",
       duration: "8:45",
       thumbnail: "guide",
+      // прямая обложка из Google Drive
+      thumbnailUrl: "https://drive.google.com/thumbnail?id=1yrlqsTOVlOSaZEO_rUfLA_1Fb0R44AKZ&sz=w1200",
       category: "guide",
       views: 756,
-      featured: true
+      featured: true,
+      // встраиваемое воспроизведение без перехода со страницы
+      embedUrl: "https://drive.google.com/file/d/1yrlqsTOVlOSaZEO_rUfLA_1Fb0R44AKZ/preview"
     },
     {
       id: "video-004",
