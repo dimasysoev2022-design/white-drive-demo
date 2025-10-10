@@ -25,6 +25,33 @@ const PARTNERSHIP_DOC_EXPORT_TXT_URL =
 const PARTNERSHIP_DOC_EXPORT_HTML_URL =
   "https://docs.google.com/document/d/1IylpgVm5SmWM1shxKLkhejMXZxlsLsl_EdWUXHyijXU/export?format=html";
 
+// Агентский договор — единый шаблон
+const AGENT_DOC_ID = "1jXxBQsa7y0q8lNO2zitdpJhBMxutP8I1cVCN-L4BLe0";
+const AGENT_DOC_EXPORT_TXT_URL = `https://docs.google.com/document/d/${AGENT_DOC_ID}/export?format=txt`;
+const AGENT_DOC_EXPORT_HTML_URL = `https://docs.google.com/document/d/${AGENT_DOC_ID}/export?format=html`;
+
+// Договоры аренды из папки Google Drive (укажи реальные ID документов)
+// Источник: https://drive.google.com/drive/folders/1fMPsK8XnMho5OglGzfT9TCOvNj5_Xy80
+const LEASE_DOC_IDS: Record<'individual'|'legal'|'selfEmployed'|'ip', string> = {
+  // Физ лицо_Договор аренды майнинг оборудования
+  individual: "12SWghmsRANoqRIArs_2jyLXKfKTDw0agZTBlRJCuMs4",
+  // Юр лицо Договор аренды майнингового оборудования с юл
+  legal: "1ttGd289XeGTjl3Ll7Ar5c1CbBKU1BLWCF_86_Pe2OCo",
+  // Самозанятый_Договор аренды майнингового оборудования
+  selfEmployed: "1WYob22s5wyDZLZf6t3eDmKCOGlysrtAskox7hgY10gk",
+  // ИП_Договор аренды майнингового оборудования
+  ip: "1V8TARWz72ie19A5xXy5lyEhs24CRI2nTfg1PNBNHGrg",
+};
+
+const getLeaseDocExportUrls = (entity: 'individual'|'legal'|'selfEmployed'|'ip') => {
+  const id = LEASE_DOC_IDS[entity];
+  if (!id) return { html: null as string | null, txt: null as string | null };
+  return {
+    html: `https://docs.google.com/document/d/${id}/export?format=html`,
+    txt: `https://docs.google.com/document/d/${id}/export?format=txt`,
+  };
+};
+
 interface Document {
   id: string;
   title: string;
@@ -33,89 +60,198 @@ interface Document {
   type: string;
   size: string;
   watermark: boolean;
-  entityType?: 'individual' | 'legal' | 'both';
+  entityType?: 'individual' | 'legal' | 'selfEmployed' | 'ip' | 'both';
 }
 
 export const DocumentsTab = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
-  const [selectedEntityType, setSelectedEntityType] = useState<'all' | 'individual' | 'legal'>('all');
+  const [selectedEntityType, setSelectedEntityType] = useState<'all' | 'individual' | 'legal' | 'selfEmployed' | 'ip'>('all');
   const [googleDocText, setGoogleDocText] = useState<string | null>(null);
   const [googleDocHtml, setGoogleDocHtml] = useState<string | null>(null);
 
   useEffect(() => {
     const loadGoogleDoc = async () => {
-      if (selectedDocument?.id !== "financial-001") {
-        setGoogleDocText(null);
+      if (!selectedDocument) return;
+
+      // по умолчанию очищаем
+      setGoogleDocText(null);
+      setGoogleDocHtml(null);
+
+      // Финансовый (пример из исходника)
+      if (selectedDocument.id === "financial-001") {
+        try {
+          const htmlResp = await fetch(PARTNERSHIP_DOC_EXPORT_HTML_URL, { credentials: "omit" });
+          if (htmlResp.ok) {
+            const html = await htmlResp.text();
+            setGoogleDocHtml(html);
+            setGoogleDocText(null);
+            return;
+          }
+        } catch {}
+        try {
+          const txtResp = await fetch(PARTNERSHIP_DOC_EXPORT_TXT_URL, { credentials: "omit" });
+          if (!txtResp.ok) throw new Error(`HTTP ${txtResp.status}`);
+          const txt = await txtResp.text();
+          setGoogleDocText(txt);
+          setGoogleDocHtml(null);
+        } catch {
+          setGoogleDocText(null);
+          setGoogleDocHtml(null);
+        }
         return;
       }
-      try {
-        // Try HTML first to preserve formatting
-        const htmlResp = await fetch(PARTNERSHIP_DOC_EXPORT_HTML_URL, { credentials: "omit" });
-        if (htmlResp.ok) {
-          const html = await htmlResp.text();
-          setGoogleDocHtml(html);
+
+      // Агентские договоры — единый шаблон
+      const isAgent = selectedDocument.id.endsWith("-agent");
+      if (isAgent) {
+        try {
+          const htmlResp = await fetch(AGENT_DOC_EXPORT_HTML_URL, { credentials: "omit" });
+          if (htmlResp.ok) {
+            const html = await htmlResp.text();
+            setGoogleDocHtml(html);
+            setGoogleDocText(null);
+            return;
+          }
+        } catch {}
+        try {
+          const txtResp = await fetch(AGENT_DOC_EXPORT_TXT_URL, { credentials: "omit" });
+          if (!txtResp.ok) throw new Error(`HTTP ${txtResp.status}`);
+          const txt = await txtResp.text();
+          setGoogleDocText(txt);
+          setGoogleDocHtml(null);
+        } catch {
           setGoogleDocText(null);
+          setGoogleDocHtml(null);
+        }
+        return;
+      }
+
+      // Договоры аренды — отдельный документ на каждую сущность
+      const isLease = selectedDocument.id.endsWith("-lease");
+      if (isLease) {
+        const entity = (selectedDocument.entityType ?? 'individual') as 'individual'|'legal'|'selfEmployed'|'ip';
+        const urls = getLeaseDocExportUrls(entity);
+        if (!urls.html && !urls.txt) {
+          // нет ID — оставим фолбэк контент
           return;
         }
-      } catch {}
-      try {
-        const txtResp = await fetch(PARTNERSHIP_DOC_EXPORT_TXT_URL, { credentials: "omit" });
-        if (!txtResp.ok) throw new Error(`HTTP ${txtResp.status}`);
-        const txt = await txtResp.text();
-        setGoogleDocText(txt);
-        setGoogleDocHtml(null);
-      } catch {
-        setGoogleDocText(null);
-        setGoogleDocHtml(null);
+        try {
+          if (urls.html) {
+            const htmlResp = await fetch(urls.html, { credentials: "omit" });
+            if (htmlResp.ok) {
+              const html = await htmlResp.text();
+              setGoogleDocHtml(html);
+              setGoogleDocText(null);
+              return;
+            }
+          }
+        } catch {}
+        try {
+          if (urls.txt) {
+            const txtResp = await fetch(urls.txt, { credentials: "omit" });
+            if (!txtResp.ok) throw new Error(`HTTP ${txtResp.status}`);
+            const txt = await txtResp.text();
+            setGoogleDocText(txt);
+            setGoogleDocHtml(null);
+          }
+        } catch {
+          setGoogleDocText(null);
+          setGoogleDocHtml(null);
+        }
       }
     };
     loadGoogleDoc();
   }, [selectedDocument]);
 
   const documents: Document[] = [
+    // Физические лица
     {
-      id: "contract-001",
-      title: "Договор купли продажи оборудования для физических лиц",
-      description: "Типовой договор на покупку майнинг оборудования для физических лиц",
+      id: "contract-individual-agent",
+      title: "Агентский договор для покупки оборудования (для физических лиц)",
+      description: "Типовой агентский договор на покупку оборудования для физ. лиц",
       category: "contract",
       type: "PDF",
-      size: "247 KB",
+      size: "240 KB",
       watermark: false,
       entityType: "individual"
     },
     {
-      id: "contract-003",
-      title: "Договор аренды оборудования для физических лиц",
-      description: "Договор аренды майнинг оборудования для физических лиц",
+      id: "contract-individual-lease",
+      title: "Договор аренды оборудования (для физических лиц)",
+      description: "Договор аренды оборудования для физ. лиц",
       category: "contract",
       type: "PDF",
-      size: "298 KB",
+      size: "260 KB",
       watermark: false,
       entityType: "individual"
     },
+
+    // Юридические лица
     {
-      id: "contract-004",
-      title: "Агентский договор для покупки оборудования",
-      description: "Типовой договор на покупку майнинг оборудования",
+      id: "contract-legal-agent",
+      title: "Агентский договор для покупки оборудования (для юридических лиц)",
+      description: "Типовой агентский договор на покупку оборудования для юр. лиц",
       category: "contract",
       type: "PDF",
-      size: "302 KB",
+      size: "255 KB",
       watermark: false,
       entityType: "legal"
     },
-    
-    
     {
-      id: "financial-001", 
-      title: "Договор товарищества для ИП и ООО",
-      description: "Договор о совместной деятельности для ИП и ООО",
-      category: "financial",
+      id: "contract-legal-lease",
+      title: "Договор аренды оборудования (для юридических лиц)",
+      description: "Договор аренды оборудования для юр. лиц",
+      category: "contract",
       type: "PDF",
-      size: "342 KB",
+      size: "275 KB",
       watermark: false,
       entityType: "legal"
+    },
+
+    // Самозанятые
+    {
+      id: "contract-self-employed-agent",
+      title: "Агентский договор для покупки оборудования (для самозанятых)",
+      description: "Типовой агентский договор на покупку оборудования для самозанятых",
+      category: "contract",
+      type: "PDF",
+      size: "245 KB",
+      watermark: false,
+      entityType: "selfEmployed"
+    },
+    {
+      id: "contract-self-employed-lease",
+      title: "Договор аренды оборудования (для самозанятых)",
+      description: "Договор аренды оборудования для самозанятых",
+      category: "contract",
+      type: "PDF",
+      size: "265 KB",
+      watermark: false,
+      entityType: "selfEmployed"
+    },
+
+    // ИП
+    {
+      id: "contract-ip-agent",
+      title: "Агентский договор для покупки оборудования (для ИП)",
+      description: "Типовой агентский договор на покупку оборудования для ИП",
+      category: "contract",
+      type: "PDF",
+      size: "250 KB",
+      watermark: false,
+      entityType: "ip"
+    },
+    {
+      id: "contract-ip-lease",
+      title: "Договор аренды оборудования (для ИП)",
+      description: "Договор аренды оборудования для ИП",
+      category: "contract",
+      type: "PDF",
+      size: "270 KB",
+      watermark: false,
+      entityType: "ip"
     }
   ];
 
@@ -143,8 +279,8 @@ export const DocumentsTab = () => {
 
   const filteredDocuments = documents.filter(doc => {
     const matchesCategory = !selectedCategory || doc.category === selectedCategory;
-    const matchesEntityType = selectedEntityType === 'all' || 
-      doc.entityType === selectedEntityType || 
+    const matchesEntityType = selectedEntityType === 'all' ||
+      doc.entityType === selectedEntityType ||
       doc.entityType === 'both';
     return matchesCategory && matchesEntityType;
   });
@@ -369,6 +505,20 @@ export const DocumentsTab = () => {
           >
             Список документов для юридических лиц
           </Button>
+          <Button
+            variant={selectedEntityType === 'selfEmployed' ? 'default' : 'outline'}
+            onClick={() => setSelectedEntityType('selfEmployed')}
+            className="flex-1"
+          >
+            Список документов для самозанятых
+          </Button>
+          <Button
+            variant={selectedEntityType === 'ip' ? 'default' : 'outline'}
+            onClick={() => setSelectedEntityType('ip')}
+            className="flex-1"
+          >
+            Список документов для ИП
+          </Button>
         </div>
 
         {/* Category Filter removed per design request */}
@@ -474,7 +624,7 @@ export const DocumentsTab = () => {
             <div className="w-full h-full p-0 overflow-auto">
               <div className="mx-auto my-6 bg-transparent text-black max-w-[900px] w-full">
                 <div className="bg-white shadow-xl rounded-sm px-12 py-10 leading-relaxed min-h-[1123px]">
-                  {selectedDocument?.id === "financial-001" && googleDocHtml ? (
+                  {googleDocHtml ? (
                     <div className="doc-html" dangerouslySetInnerHTML={{ __html: googleDocHtml }} />
                   ) : (
                     <>
@@ -482,9 +632,7 @@ export const DocumentsTab = () => {
                         {selectedDocument?.title}
                       </h1>
                       <div className="text-[15px] whitespace-pre-wrap">
-                        {selectedDocument?.id === "financial-001" && googleDocText
-                          ? googleDocText
-                          : selectedDocument && getDocumentContent(selectedDocument)}
+                        {googleDocText ?? (selectedDocument && getDocumentContent(selectedDocument))}
                       </div>
                     </>
                   )}
